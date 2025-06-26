@@ -19,14 +19,13 @@ class CreateVolunteerApplicationsTable extends Migration
             $table->integer('age');
             $table->enum('gender', ['male', 'female']);
             $table->string('phone_number');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->text('skills');
-            $table->enum('interests',
-                ['Educational','Medicine','Organizational','Media','technical']);
-            $table->json('available_times')->comment('Available days and hours for volunteering');
-            $table->enum('status', ['new', 'reviewed', 'accepted', 'rejected'])
-                ->default('new');
+            $table->enum('interests', ['Educational','Medicine','Organizational','Media','technical']);
+            $table->json('available_times');
+            $table->enum('status', ['new', 'reviewed', 'accepted', 'rejected'])->default('new');
             $table->text('notes')->nullable();
+            $table->string('cv_path')->nullable();
             $table->timestamps();
         });
     }

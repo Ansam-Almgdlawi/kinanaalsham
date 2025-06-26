@@ -11,22 +11,15 @@ class VolunteerApplication extends Model
     use HasFactory;
 
     protected $fillable = [
-        'full_name',
-        'age',
-        'gender',
-        'phone_number',
-        'email',
-        'skills',
-        'interests',
-        'available_times',
-        'status',
-        'notes',
+        'full_name', 'age', 'gender', 'phone_number',
+        'email', 'skills', 'interests', 'available_times',
+        'status', 'notes', 'cv_path'
     ];
-    protected $hidden = ['created_at', 'updated_at'];
 
     protected $casts = [
         'available_times' => 'array',
     ];
+    protected $hidden = ['created_at', 'updated_at'];
 
     protected $appends = ['formatted_date'];
 

@@ -3,50 +3,31 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreVolunteerApplicationRequest;
+use App\Http\Resources\VolunteerApplicationResource;
+use App\Models\User;
 use App\Models\VolunteerApplication;
+use App\Services\VolunteerApplicationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
 
 class VolunteerApplicationController extends Controller
 {
-    public function store(Request $request)
+    public function __construct(protected VolunteerApplicationService $service) {}
+
+    public function store(StoreVolunteerApplicationRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'full_name' => 'required|string|max:255',
-            'age' => 'required|integer|min:16|max:100',
-            'gender' => 'required|in:male,female',
-            'phone_number' => 'required|string|max:20',
-            'email' => 'required|email|max:255',
-            'skills' => 'required|string',
-            'interests' => 'required|in:Educational,Medicine,Organizational,Media,technical',
-            'available_times' => 'required|array|min:1',
-            'available_times.*' => 'string|max:255',
-            'notes' => 'nullable|string'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors(),
-            ], 422);
-        }
-
-        $application = VolunteerApplication::create([
-            'full_name' => $request->full_name,
-            'age' => $request->age,
-            'gender' => $request->gender,
-            'phone_number' => $request->phone_number,
-            'email' => $request->email,
-            'skills' => $request->skills,
-            'interests' => $request->interests,
-            'available_times' => $request->available_times,
-            'status' => 'new',
-            'notes' => $request->notes,
-        ]);
+        $application = $this->service->store(
+            $request->validated(),
+            $request->file('cv')
+        );
 
         return response()->json([
             'success' => true,
-            'message' => 'Volunteer application submitted successfully!',
+            'message' => 'Application submitted successfully.',
+            'data' => new VolunteerApplicationResource($application),
         ], 201);
     }
 
@@ -84,5 +65,22 @@ class VolunteerApplicationController extends Controller
             'success' => true,
             'message' => 'Application status updated successfully.',
         ]);
+    }
+    public function showProfilePicture(int $id)
+    {
+        $user = User::findOrFail($id);
+
+        if (!$user->profile_picture_url || !Storage::disk('public')->exists($user->profile_picture_url)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'الصورة غير موجودة.'
+            ], 404);
+        }
+
+        // جلب المسار الفعلي
+        $path = Storage::disk('public')->path($user->profile_picture_url);
+
+        // إرجاع الصورة كرد من نوع image/*
+        return response()->file($path);
     }
 }

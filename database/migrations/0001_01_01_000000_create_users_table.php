@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('phone_number')->nullable();
+            $table->unsignedBigInteger('role_id');
+            $table->enum('status', ['active', 'inactive', 'banned', 'pending_verification'])->default('pending_verification');
+            $table->string('profile_picture_url')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
