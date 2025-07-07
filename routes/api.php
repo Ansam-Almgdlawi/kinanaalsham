@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 
 // ==== Volunteer Application APIs ====
 use App\Http\Controllers\Api\VolunteerApplicationController;
+use App\Http\Controllers\Api\TrainingCourseController; // ← من فرع master
 
 // ==== Authentication APIs ====
 use App\Http\Controllers\Api\Auth\RegisterController;
@@ -32,6 +33,7 @@ Route::prefix('volunteer')->group(function () {
 Route::get('volunteers/{id}/profile-picture', [VolunteerApplicationController::class, 'showProfilePicture']);
 Route::get('/opportunities/jobs', [OpportunityController::class, 'indexJobs']);
 Route::get('/opportunities/volunteering', [OpportunityController::class, 'indexVolunteering']);
+
 /*
 |--------------------------------------------------------------------------
 | Volunteer Authentication APIs
@@ -70,3 +72,10 @@ Route::prefix('admin')->group(function () {
         Route::patch('applications/{id}/status', [OpportunityApplicationController::class, 'updateStatus']);
     });
 });
+
+/*
+|--------------------------------------------------------------------------
+| Training Courses APIs
+|--------------------------------------------------------------------------
+*/
+Route::post('/training-courses', [TrainingCourseController::class, 'store']);

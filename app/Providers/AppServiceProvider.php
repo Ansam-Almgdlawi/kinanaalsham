@@ -24,6 +24,21 @@ class AppServiceProvider extends ServiceProvider
             OpportunityApplicationRepositoryInterface::class,
             EloquentOpportunityApplicationRepository::class
         );
+
+        // الكود القادم من فرع master
+        $this->app->bind(
+            \App\Repositories\TrainingCourseRepository::class,
+            \App\Repositories\TrainingCourseRepository::class
+        );
+
+        $this->app->bind(
+            \App\Services\TrainingCourseService::class,
+            function ($app) {
+                return new \App\Services\TrainingCourseService(
+                    $app->make(\App\Repositories\TrainingCourseRepository::class)
+                );
+            }
+        );
     }
 
     /**
@@ -34,6 +49,5 @@ class AppServiceProvider extends ServiceProvider
         Route::middleware('api')
             ->prefix('api')
             ->group(base_path('routes/api.php'));
-
     }
 }
