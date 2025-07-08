@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CourseVoteController;
 use App\Http\Controllers\OpportunityApplicationController;
 use App\Http\Controllers\OpportunityController;
 use Illuminate\Http\Request;
@@ -78,4 +79,10 @@ Route::prefix('admin')->group(function () {
 | Training Courses APIs
 |--------------------------------------------------------------------------
 */
-Route::post('/training-courses', [TrainingCourseController::class, 'store']);
+               Route::post('/training-courses', [TrainingCourseController::class, 'store']);
+
+      // Route::middleware('auth:sanctum')->group(function () {
+               Route::get('/courses', [CourseVoteController::class, 'index'])->middleware('auth:sanctum');
+               Route::post('{courseId}/vote', [CourseVoteController::class, 'vote'])->middleware('auth:sanctum');
+
+//});

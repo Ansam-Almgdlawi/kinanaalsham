@@ -20,8 +20,7 @@ return new class extends Migration
             $table->date('end_date')->nullable(); // end_date: DATE, NULLABLE
             $table->unsignedInteger('duration_hours')->nullable();
             $table->string('location', 255)->nullable(); // مكان الدورة
-            $table->string('target_audience_description', 255)->nullable(); // وصف الجمهور المستهدف
-            $table->unsignedBigInteger('created_by_user_id'); // FK إلى users.id
+
             $table->timestamps();
         });
     }

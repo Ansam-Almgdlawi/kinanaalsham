@@ -20,9 +20,8 @@ class TrainingCourseRequest extends FormRequest
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'duration_hours' => 'nullable|integer|min:1',
-            'location' => 'nullable|string|max:255',
-            'target_audience_description' => 'nullable|string|max:255',
-            'created_by_user_id' => 'required|exists:users,id'
+            'location' => 'nullable|string|max:255'
+
         ];
     }
 }

@@ -13,9 +13,8 @@ class TrainingCourse extends Model
         'start_date',
         'end_date',
         'duration_hours',
-        'location',
-        'target_audience_description',
-        'created_by_user_id'
+        'location'
+
     ];
 
     protected $casts = [
@@ -23,8 +22,17 @@ class TrainingCourse extends Model
         'end_date' => 'date',
     ];
 
-    public function admin()
+//    public function admin()
+//    {
+//        return $this->belongsTo(User::class, 'created_by_user_id');
+//    }
+
+
+    public function votes()
     {
-        return $this->belongsTo(User::class, 'created_by_user_id');
+        return $this->hasMany(CourseVote::class, 'course_id');
     }
+
+
+
 }
