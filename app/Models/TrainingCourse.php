@@ -13,7 +13,10 @@ class TrainingCourse extends Model
         'start_date',
         'end_date',
         'duration_hours',
+
         'location'
+
+
 
     ];
 
@@ -21,6 +24,7 @@ class TrainingCourse extends Model
         'start_date' => 'date',
         'end_date' => 'date',
     ];
+
 
 //    public function admin()
 //    {
@@ -32,6 +36,7 @@ class TrainingCourse extends Model
     {
         return $this->hasMany(CourseVote::class, 'course_id');
     }
+
 
 
 
