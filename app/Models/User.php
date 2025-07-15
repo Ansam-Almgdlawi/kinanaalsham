@@ -71,6 +71,7 @@ class User extends Authenticatable
     {
         return $this->role && $this->role->name === 'Volunteer';
     }
+<<<<<<< HEAD
     public function beneficiaryDetail()
     {
         return $this->hasOne(BeneficiaryDetail::class);
@@ -80,5 +81,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(BeneficiaryDocument::class, 'beneficiary_user_id');
     }
+=======
+
+
+    public function courseVotes()
+    {
+        return $this->hasMany(CourseVote::class);
+    }
+
+>>>>>>> 3398b898ed2603bd64ce90361b022535b3e95f67
 
 }
