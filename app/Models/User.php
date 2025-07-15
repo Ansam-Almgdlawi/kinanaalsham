@@ -71,4 +71,12 @@ class User extends Authenticatable
     {
         return $this->role && $this->role->name === 'Volunteer';
     }
+
+
+    public function courseVotes()
+    {
+        return $this->hasMany(CourseVote::class);
+    }
+
+
 }

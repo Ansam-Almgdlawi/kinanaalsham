@@ -19,11 +19,7 @@ class TrainingCourseResource extends JsonResource
                 'duration_hours' => $this->duration_hours,
             ],
             'location' => $this->location,
-            'target_audience' => $this->target_audience_description,
-            'admin' => [
-                'id' => $this->admin->id,
-                'name' => $this->admin->name,
-            ],
+
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
         ];
