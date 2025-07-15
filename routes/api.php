@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\BeneficiaryController;
 use App\Http\Controllers\OpportunityApplicationController;
 use App\Http\Controllers\OpportunityController;
 use Illuminate\Http\Request;
@@ -70,6 +71,9 @@ Route::prefix('admin')->group(function () {
         Route::patch('/opportunities/{id}/status', [OpportunityController::class, 'updateStatus']);
         Route::get('applications/pending', [OpportunityApplicationController::class, 'indexPendingApplications']);
         Route::patch('applications/{id}/status', [OpportunityApplicationController::class, 'updateStatus']);
+        Route::post('beneficiaries/{user}/status', [BeneficiaryController::class, 'updateStatus']);
+        Route::get('beneficiaries/pending', [BeneficiaryController::class, 'pending']);
+        Route::get('beneficiaries/{user}', [BeneficiaryController::class, 'show']);
     });
 });
 
@@ -79,3 +83,10 @@ Route::prefix('admin')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::post('/training-courses', [TrainingCourseController::class, 'store']);
+
+
+Route::prefix('beneficiaries')->group(function () {
+    Route::post('/register', [BeneficiaryController::class, 'store']);
+    Route::post('login', [LoginController::class, 'beneficiaryLogin']);
+
+});

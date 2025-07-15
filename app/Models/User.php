@@ -71,4 +71,14 @@ class User extends Authenticatable
     {
         return $this->role && $this->role->name === 'Volunteer';
     }
+    public function beneficiaryDetail()
+    {
+        return $this->hasOne(BeneficiaryDetail::class);
+    }
+
+    public function documents()
+    {
+        return $this->hasMany(BeneficiaryDocument::class, 'beneficiary_user_id');
+    }
+
 }
