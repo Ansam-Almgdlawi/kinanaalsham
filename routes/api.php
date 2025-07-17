@@ -1,8 +1,11 @@
 <?php
 
 
+use App\Http\Controllers\Api\Admin\CourseAnnouncementController;
 use App\Http\Controllers\Api\CourseVoteController;
 
+use App\Http\Controllers\Api\NewsController;
+use App\Http\Controllers\Api\VolunteerRegistrationController;
 use App\Http\Controllers\OpportunityApplicationController;
 use App\Http\Controllers\OpportunityController;
 use Illuminate\Http\Request;
@@ -82,13 +85,14 @@ Route::prefix('admin')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-               Route::post('/training-courses', [TrainingCourseController::class, 'store']);
+Route::post('/training-courses', [TrainingCourseController::class, 'store']);
 
 
-               Route::get('/courses', [CourseVoteController::class, 'index'])->middleware('auth:sanctum');
-               Route::post('{courseId}/vote', [CourseVoteController::class, 'vote'])->middleware('auth:sanctum');
+Route::get('/courses', [CourseVoteController::class, 'index'])->middleware('auth:sanctum');
+Route::post('{courseId}/vote', [CourseVoteController::class, 'vote'])->middleware('auth:sanctum');
 
-
-
-
-
+Route::get('/courses/{id}', [CourseVoteController::class, 'show'])->middleware('auth:sanctum');
+Route::get('/top-courses', [CourseAnnouncementController::class, 'topVotedCourses'])->middleware('auth:sanctum');
+Route::post('/announce', [CourseAnnouncementController::class, 'announce'])->middleware('auth:sanctum');
+Route::get('/volunteer/news', [NewsController::class, 'getAnnouncedCourse'])->middleware('auth:sanctum');
+Route::post('/courses/{id}/register', [VolunteerRegistrationController::class, 'register']);

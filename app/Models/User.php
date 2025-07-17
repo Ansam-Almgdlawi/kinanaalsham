@@ -72,11 +72,20 @@ class User extends Authenticatable
         return $this->role && $this->role->name === 'Volunteer';
     }
 
+    public function trainingCourses()
+    {
+        return $this->belongsToMany(TrainingCourse::class, 'course_volunteer', 'user_id', 'course_id');
+    }
 
     public function courseVotes()
     {
         return $this->hasMany(CourseVote::class);
     }
-
+    public function registeredCourses()
+    {
+        return $this->belongsToMany(TrainingCourse::class, 'course_volunteer')
+            ->withPivot(['status', 'registered_at'])
+            ->withTimestamps();
+    }
 
 }
