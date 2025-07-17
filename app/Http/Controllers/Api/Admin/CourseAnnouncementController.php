@@ -45,14 +45,7 @@ class CourseAnnouncementController extends Controller
             ->where('id', '!=', $request->course_id)
             ->update(['is_announced' => false]);
 
-//        // 2. حذف الدورات غير المعتمدة (عدا الدورة الجديدة)
-//        $deletedCount = TrainingCourse::where(function($query) use ($request) {
-//            $query->where('is_announced', false)
-//                ->orWhereNull('is_announced');
-//        })
-//            ->where('id', '!=', $request->course_id)
-//            ->where('created_at', '<', now()->subWeek())
-//            ->delete();
+
         // 2. حذف الدورات غير المعتمدة (عدا الدورة الجديدة)
         $query = TrainingCourse::where('id', '!=', $request->course_id)
             ->where(function($query) {
@@ -61,13 +54,19 @@ class CourseAnnouncementController extends Controller
             })
             ->where('created_at', '<', now());
         $deletedCount = $query->delete();
+
+
+
+
         // 3. إعلان الدورة الجديدة
         $course = TrainingCourse::findOrFail($request->course_id);
         $course->update([
             'is_announced' => true,
             'announcement_text' => $request->announcement_text,
-            'max_volunteers' => $request->max_volunteers, // العدد الأقصى للمتطوعين
-            'current_volunteers' => 0 // يبدأ من الصفر
+
+             'max_volunteers' => $request->max_volunteers, // العدد الأقصى للمتطوعين
+             'current_volunteers' => 0 // يبدأ من الصفر
+
         ]);
 
         return response()->json([
