@@ -10,6 +10,7 @@ class VolunteerRegistrationController
 {
     public function register(Request $request, $courseId)
     {
+
         $course = TrainingCourse::where('is_announced', true)->findOrFail($courseId);
 
         // التحقق من الشروط

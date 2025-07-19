@@ -13,10 +13,10 @@ class TrainingCourse extends Model
         'start_date',
         'end_date',
         'duration_hours',
-
-        'location'
-
-
+         'is_announced',
+        'location',
+        'max_volunteers',
+        'current_volunteers'
 
     ];
 
@@ -37,7 +37,12 @@ class TrainingCourse extends Model
         return $this->hasMany(CourseVote::class, 'course_id');
     }
 
-
+    public function volunteers()
+    {
+        return $this->belongsToMany(User::class, 'course_volunteer', 'course_id', 'user_id')
+            ->withPivot(['status', 'registered_at'])
+            ->withTimestamps();
+    }
 
 
 }

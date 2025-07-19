@@ -5,7 +5,8 @@ namespace App\Repositories;
 use App\Models\CourseVote;
 use App\Models\TrainingCourse;
 use App\Models\User;
-class CourseVoteRepository
+class
+CourseVoteRepository
 {
     public function createVote(TrainingCourse $course, User $user): CourseVote
     {

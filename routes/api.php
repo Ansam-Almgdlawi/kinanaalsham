@@ -1,16 +1,19 @@
 <?php
 
-use App\Http\Controllers\Api\SuccessStoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Resources\UserResource;
 
 // ==== Controllers ====
+use App\Http\Controllers\Api\SuccessStoryController;
 use App\Http\Controllers\Api\VolunteerApplicationController;
 use App\Http\Controllers\Api\TrainingCourseController;
 use App\Http\Controllers\Api\CourseVoteController;
-use App\Http\Controllers\OpportunityController;
+use App\Http\Controllers\Api\Admin\CourseAnnouncementController;
+use App\Http\Controllers\Api\NewsController;
+use App\Http\Controllers\Api\VolunteerRegistrationController;
 use App\Http\Controllers\OpportunityApplicationController;
+use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\LogoutController;
@@ -83,6 +86,7 @@ Route::prefix('admin')->group(function () {
         Route::post('beneficiaries/{user}/status', [BeneficiaryController::class, 'updateStatus']);
         Route::get('beneficiaries/pending', [BeneficiaryController::class, 'pending']);
         Route::get('beneficiaries/{user}', [BeneficiaryController::class, 'show']);
+        Route::post('beneficiaries/success-stories', [SuccessStoryController::class, 'store']);
     });
 });
 
@@ -93,14 +97,27 @@ Route::prefix('admin')->group(function () {
 */
 Route::post('/training-courses', [TrainingCourseController::class, 'store']);
 
+Route::get('/courses', [CourseVoteController::class, 'index'])->middleware('auth:sanctum');
+Route::post('{courseId}/vote', [CourseVoteController::class, 'vote'])->middleware('auth:sanctum');
+Route::get('/courses/{id}', [CourseVoteController::class, 'show'])->middleware('auth:sanctum');
+Route::get('/top-courses', [CourseAnnouncementController::class, 'topVotedCourses'])->middleware('auth:sanctum');
+Route::post('/announce', [CourseAnnouncementController::class, 'announce'])->middleware('auth:sanctum');
+Route::get('/volunteer/news', [NewsController::class, 'getAnnouncedCourse'])->middleware('auth:sanctum');
+Route::post('/courses/{id}/register', [VolunteerRegistrationController::class, 'register']);
+
 /*
 |--------------------------------------------------------------------------
-| Beneficiary APIs
+| Success Stories (Public APIs)
 |--------------------------------------------------------------------------
 */
 Route::get('/success-stories', [SuccessStoryController::class, 'approvedStories']);
 Route::get('/success-stories/{id}', [SuccessStoryController::class, 'show']);
 
+/*
+|--------------------------------------------------------------------------
+| Beneficiary APIs
+|--------------------------------------------------------------------------
+*/
 Route::prefix('beneficiaries')->group(function () {
     Route::post('/register', [BeneficiaryController::class, 'store']);
     Route::post('/login', [LoginController::class, 'beneficiaryLogin']);
