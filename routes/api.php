@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\SuccessStoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Resources\UserResource;
@@ -75,6 +76,8 @@ Route::prefix('admin')->group(function () {
         Route::patch('/opportunities/{id}/status', [OpportunityController::class, 'updateStatus']);
         Route::get('applications/pending', [OpportunityApplicationController::class, 'indexPendingApplications']);
         Route::patch('applications/{id}/status', [OpportunityApplicationController::class, 'updateStatus']);
+        Route::get('success-stories/pending', [SuccessStoryController::class, 'pending']);
+        Route::patch('success-stories/{id}/status', [SuccessStoryController::class, 'approve']);
 
         // المستفيدين
         Route::post('beneficiaries/{user}/status', [BeneficiaryController::class, 'updateStatus']);
@@ -95,7 +98,14 @@ Route::post('/training-courses', [TrainingCourseController::class, 'store']);
 | Beneficiary APIs
 |--------------------------------------------------------------------------
 */
+Route::get('/success-stories', [SuccessStoryController::class, 'approvedStories']);
+Route::get('/success-stories/{id}', [SuccessStoryController::class, 'show']);
+
 Route::prefix('beneficiaries')->group(function () {
     Route::post('/register', [BeneficiaryController::class, 'store']);
     Route::post('/login', [LoginController::class, 'beneficiaryLogin']);
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/success-stories', [SuccessStoryController::class, 'store']);
+    });
 });
