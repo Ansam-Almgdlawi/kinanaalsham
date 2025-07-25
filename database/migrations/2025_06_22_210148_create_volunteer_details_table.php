@@ -21,6 +21,7 @@ return new class extends Migration
             $table->timestamp('date_joined_from_form')->nullable();
             $table->decimal('total_hours_volunteered', 10, 2)->default(0.00);
             $table->enum('volunteering_type_preference', ['remote', 'on_site', 'both'])->nullable();
+            $table->string('address')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

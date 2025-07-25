@@ -39,6 +39,7 @@ class VolunteerDetail extends Model
         'total_points',
         'total_hours_volunteered',
         'volunteering_type_preference',
+        'address',
     ];
 
     /**
@@ -50,6 +51,7 @@ class VolunteerDetail extends Model
         'date_joined_from_form' => 'datetime',
         'total_hours_volunteered' => 'decimal:2',
         'total_points' => 'integer',
+        'availability_schedule' => 'array',
     ];
 
     /**

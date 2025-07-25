@@ -16,6 +16,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
     protected $fillable = [
         'name',
         'email',
@@ -98,4 +99,9 @@ class User extends Authenticatable
             ->withPivot(['status', 'registered_at'])
             ->withTimestamps();
     }
+    public function details()
+    {
+        return $this->hasOne(BeneficiaryDetail::class, 'user_id');
+    }
+
 }

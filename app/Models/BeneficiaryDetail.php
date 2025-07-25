@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class BeneficiaryDetail extends Model
 {
+    protected $primaryKey = 'user_id';
+    public $incrementing = false;
     protected $fillable = [
         'user_id', 'beneficiary_type_id', 'civil_status',
         'gender', 'birth_date', 'address', 'family_members_count',
