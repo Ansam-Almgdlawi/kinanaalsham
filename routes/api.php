@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\CourseVoteController;
 
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\VolunteerRegistrationController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\OpportunityApplicationController;
 use App\Http\Controllers\OpportunityController;
 
@@ -23,7 +24,7 @@ use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\LogoutController;
 use App\Http\Controllers\Api\Admin\AdminLoginController;
 use App\Http\Controllers\API\BeneficiaryController;
-
+use App\Http\Middleware\CheckAdminProjectManager;
 /*
 |--------------------------------------------------------------------------
 | Volunteer APIs
@@ -97,19 +98,21 @@ Route::prefix('admin')->group(function () {
 |--------------------------------------------------------------------------
 */
 
+Route::post('training-courses',[TrainingCourseController::class,'store'])->middleware('auth:api','admin.projectmanager');
+Route::group(['middleware' => ['role:admin'|'Project Manager']], function () {
+    //Route::post('/training-courses', [TrainingCourseController::class, 'store'])->middleware('auth:sanctum');
+});
 
+Route::get('/courses', [CourseVoteController::class, 'index'])->middleware(['auth:api', 'beneficiary.volunteer']);
+Route::post('{courseId}/vote', [CourseVoteController::class, 'vote'])->middleware(['auth:api', 'beneficiary.volunteer']);
 
-Route::post('/training-courses', [TrainingCourseController::class, 'store']);
-
-
-Route::get('/courses', [CourseVoteController::class, 'index'])->middleware('auth:sanctum');
-Route::post('{courseId}/vote', [CourseVoteController::class, 'vote'])->middleware('auth:sanctum');
-
-Route::get('/courses/{id}', [CourseVoteController::class, 'show'])->middleware('auth:sanctum');
-Route::get('/top-courses', [CourseAnnouncementController::class, 'topVotedCourses'])->middleware('auth:sanctum');
-Route::post('/announce', [CourseAnnouncementController::class, 'announce'])->middleware('auth:sanctum');
-Route::get('/volunteer/news', [NewsController::class, 'getAnnouncedCourse'])->middleware('auth:sanctum');
-Route::post('/courses/{id}/register', [VolunteerRegistrationController::class, 'register']);
+Route::get('/courses/{id}', [CourseVoteController::class, 'show'])->middleware(['auth:api', 'beneficiary.volunteer']);
+Route::get('/top-courses', [CourseAnnouncementController::class, 'topVotedCourses'])->middleware('auth:api','admin.projectmanager');
+Route::post('/announce', [CourseAnnouncementController::class, 'announce'])->middleware('auth:api','admin.projectmanager');
+Route::get('/volunteer/news', [NewsController::class, 'getAnnouncedCourse'])->middleware(['auth:api', 'beneficiary.volunteer']);
+Route::post('/courses/{id}/register', [VolunteerRegistrationController::class, 'register'])->middleware(['auth:api', 'beneficiary.volunteer']);
+Route::get('/courses/{courseId}/registrations', [VolunteerRegistrationController::class, 'showRegistrations'])
+    ->middleware('auth:api','admin.projectmanager');
 
 /*
 |--------------------------------------------------------------------------
@@ -121,3 +124,12 @@ Route::prefix('beneficiaries')->group(function () {
     Route::post('/login', [LoginController::class, 'beneficiaryLogin']);
 });
 
+/*
+|--------------------------------------------------------------------------
+| Event APIs
+|--------------------------------------------------------------------------
+*/
+
+    Route::post('/events', [EventController::class, 'store'])->middleware('auth:sanctum'); // إنشاء فعالية جديدة
+    Route::post('/events/by-month', [EventController::class, 'getEventsByMonth']);
+    Route::post('/events/by-date', [EventController::class, 'getEventsByDate']);

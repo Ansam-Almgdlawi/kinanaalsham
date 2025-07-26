@@ -22,7 +22,12 @@ class CourseVoteController extends Controller
     public function vote(CourseVoteRequest $request, $courseId)
     {
 
-        //`1dd(Auth::user());
+        $user = auth()->user();
+
+        if (!$user || !in_array($user->role->id, [5,6])) {
+            abort(403, 'هذا الإجراء مسموح فقط للمستفيدين والمتطوعين!');
+        }
+
         $result = $this->voteService->vote($courseId);
 
         if (!$result['success']) {
@@ -34,6 +39,12 @@ class CourseVoteController extends Controller
 
     public function index(): JsonResponse
     {
+
+        $user = auth()->user();
+
+        if (!$user || !in_array($user->role->id, [5,6])) {
+            abort(403, 'هذا الإجراء مسموح فقط للمستفيدين والمتطوعين!');
+        }
         $courses = $this->voteService->getAllCoursesWithVotes();
 
         return response()->json([
@@ -45,6 +56,12 @@ class CourseVoteController extends Controller
 
     public function show($id): JsonResponse
     {
+        $user = auth()->user();
+
+        if (!$user || !in_array($user->role->id, [5,6])) {
+            abort(403, 'هذا الإجراء مسموح فقط للمستفيدين والمتطوعين!');
+        }
+
         $course = TrainingCourse::with('votes')->withCount('votes')->find($id);
 
         if (!$course) {

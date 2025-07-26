@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('course_id')->constrained('training_courses')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('user_type', 20)
+                ->comment('volunteer أو beneficiary');
             $table->string('status')->default('pending');
             $table->timestamp('registered_at')->useCurrent();
             $table->timestamps();
