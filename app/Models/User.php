@@ -16,6 +16,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
     protected $fillable = [
         'name',
         'email',
@@ -82,7 +83,6 @@ class User extends Authenticatable
         return $this->hasMany(BeneficiaryDocument::class, 'beneficiary_user_id');
     }
 
-
     public function trainingCourses()
     {
         return $this->belongsToMany(TrainingCourse::class, 'course_volunteer', 'user_id', 'course_id');
@@ -99,6 +99,9 @@ class User extends Authenticatable
             ->withPivot(['status', 'registered_at'])
             ->withTimestamps();
     }
-
+    public function details()
+    {
+        return $this->hasOne(BeneficiaryDetail::class, 'user_id');
+    }
 
 }
