@@ -43,6 +43,39 @@ class AdminLoginController extends Controller
         ]);
     }
 
+    public function loginProjectManager(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        $user = User::where('email', $credentials['email'])->first();
+
+        if (!$user || !Hash::check($credentials['password'], $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['بيانات الدخول غير صحيحة.'],
+            ]);
+        }
+
+        // التأكد أن المستخدم هو Project Manager (مثلاً role_id = 2)
+        if ($user->role_id !== 2) {
+            return response()->json([
+                'success' => false,
+                'message' => 'ليس لديك صلاحية الدخول كمدير مشروع.',
+            ], 403);
+        }
+
+        // إنشاء التوكن
+        $token = $user->createToken('project_manager_token')->plainTextToken;
+
+        return response()->json([
+            'success' => true,
+            'message' => 'تم تسجيل الدخول بنجاح.',
+            'token' => $token,
+        ]);
+    }
+
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();

@@ -199,7 +199,9 @@ Route::get('events/{event}/comments', [EventRatingController::class, 'getComment
 Route::get('events/{event}/average-rating', [EventRatingController::class, 'getAverageRating'])
     ->middleware('auth:api','admin.projectmanager');
 
-
+Route::post('/login-project-manager', [AdminLoginController::class, 'loginProjectManager']);
+Route::post('/logout', [AdminLoginController::class, 'logout'])
+    ->middleware('auth:sanctum');
 
     /*
     ----------------------------------------------------------------

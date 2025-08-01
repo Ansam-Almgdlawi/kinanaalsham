@@ -14,6 +14,7 @@ class AdminUserSeeder extends Seeder
      */
     public function run(): void
     {
+        // إنشاء أو تحديث حساب الأدمن
         User::updateOrCreate(
             ['email' => 'admin@gmail.com'],
             [
@@ -24,5 +25,18 @@ class AdminUserSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
+
+        // إنشاء أو تحديث حساب Project Manager
+        User::updateOrCreate(
+            ['email' => 'pm@gmail.com'],
+            [
+                'name' => 'Project Manager',
+                'password' => Hash::make('pm12345'),
+                'role_id' => 2,
+                'status' => 'active',
+                'email_verified_at' => now(),
+            ]
+        );
     }
+
 }
