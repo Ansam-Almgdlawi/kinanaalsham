@@ -15,6 +15,7 @@ class TrainingCourse extends Model
         'duration_hours',
          'is_announced',
         'location',
+        'target_audience',
         'max_volunteers',
         'current_volunteers'
 

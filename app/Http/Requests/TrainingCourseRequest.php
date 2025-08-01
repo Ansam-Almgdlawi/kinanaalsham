@@ -20,9 +20,8 @@ class TrainingCourseRequest extends FormRequest
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'duration_hours' => 'nullable|integer|min:1',
-            'max_volunteers' => 'nullable
-
-            |integer|min:1',
+            'max_volunteers' => 'nullable|integer|min:1',
+            'target_audience' => 'required|in:volunteer,beneficiary',
             'location' => 'nullable|string|max:255'
 
 

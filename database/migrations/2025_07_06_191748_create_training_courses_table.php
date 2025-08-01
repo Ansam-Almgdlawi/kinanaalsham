@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('end_date')->nullable(); // end_date: DATE, NULLABLE
             $table->unsignedInteger('duration_hours')->nullable();
             $table->string('location', 255)->nullable(); // مكان الدورة
+            $table->enum('target_audience',['volunteer','beneficiary']);
             $table->boolean('is_announced')->default(false);
             $table->integer('max_volunteers')->default(0)->nullable();
             $table->integer('current_volunteers')->default(0);

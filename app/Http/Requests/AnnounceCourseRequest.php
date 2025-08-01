@@ -18,12 +18,12 @@ class AnnounceCourseRequest extends FormRequest
             'course_id' => [
                 'required',
                 'exists:training_courses,id',
-                function ($attribute, $value, $fail) {
-                    $course = TrainingCourse::find($value);
-                    if (!$course->votes()->exists()) {
-                        $fail('يجب أن تحتوي الدورة على تصويتات على الأقل');
-                    }
-                }
+//                function ($attribute, $value, $fail) {
+//                    $course = TrainingCourse::find($value);
+//                    if (!$course->votes()->exists()) {
+//                        $fail('يجب أن تحتوي الدورة على تصويتات على الأقل');
+//                    }
+//                }
             ],
             'announcement_text' => 'nullable|string|max:500',
             'max_volunteers' => 'required|integer|min:1' // إضافة هذا الحقل
