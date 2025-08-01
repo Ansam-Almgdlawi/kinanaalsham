@@ -9,9 +9,9 @@ class CourseVoteRequest extends FormRequest
 {
     public function authorize()
     {
-        $course = TrainingCourse::find($this->courseId);
-        return $course && !$course->votes()->where('user_id', auth()->id())->exists();
+return true;
     }
+
 
     public function rules()
     {

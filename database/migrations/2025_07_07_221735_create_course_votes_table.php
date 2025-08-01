@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('course_votes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('course_id')->constrained('training_courses'); // أي دورة
+            $table->foreignId('course_id')->constrained('training_courses')->onDelete('cascade');  // أي دورة
             $table->foreignId('user_id')->constrained('users'); // أي متطوع
             $table->timestamp('voted_at')->useCurrent(); // وقت التصويت
             $table->unique(['course_id', 'user_id']); // منع التصويت المكرر

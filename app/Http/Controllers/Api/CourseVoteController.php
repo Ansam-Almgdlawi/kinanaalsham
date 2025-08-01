@@ -24,8 +24,11 @@ class CourseVoteController extends Controller
 
         $user = auth()->user();
 
-        if (!$user || !in_array($user->role->id, [5,6])) {
-            abort(403, 'هذا الإجراء مسموح فقط للمستفيدين والمتطوعين!');
+        if (!$user || $user->role->id !== 5) {
+            return response()->json([
+                'success' => false,
+                'message' => 'عذراً، هذا الاجراء خاص بالمتطوعين  فقط'
+            ], 403);
         }
 
         $result = $this->voteService->vote($courseId);
@@ -39,18 +42,22 @@ class CourseVoteController extends Controller
 
     public function index(): JsonResponse
     {
-
         $user = auth()->user();
 
         if (!$user || !in_array($user->role->id, [5,6])) {
             abort(403, 'هذا الإجراء مسموح فقط للمستفيدين والمتطوعين!');
         }
-        $courses = $this->voteService->getAllCoursesWithVotes();
+
+        // تحديد نوع الجمهور المستهدف بناءً على دور المستخدم
+        $targetAudience = ($user->role->id == 6) ? 'beneficiary' : 'volunteer';
+
+        $courses = $this->voteService->getAllCoursesWithVotes()
+            ->where('target_audience', $targetAudience); // تصفية حسب الجمهور المستهدف
 
         return response()->json([
             'success' => true,
             'data' => $courses,
-            'message' => 'تم جلب جميع الدورات مع تصويتاتها'
+            'message' => 'تم جلب الدورات الخاصة بـ ' . ($targetAudience == 'beneficiary' ? 'المستفيدين' : 'المتطوعين')
         ]);
     }
 

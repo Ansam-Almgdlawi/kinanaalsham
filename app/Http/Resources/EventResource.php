@@ -23,4 +23,11 @@ class EventResource extends JsonResource
             'created_at' => $this->created_at,
         ];
     }
+
+    private function getMediaUrls()
+    {
+        return $this->media ? array_map(function($path) {
+            return asset('storage/'.$path);
+        }, json_decode($this->media, true)) : [];
+    }
 }

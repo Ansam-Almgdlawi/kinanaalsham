@@ -8,16 +8,13 @@ use App\Models\User;
 class
 CourseVoteRepository
 {
-    public function createVote(TrainingCourse $course, User $user): CourseVote
+    public function createVote(TrainingCourse $course, User $user): CourseVote|\Illuminate\Http\JsonResponse
     {
-//        // تحقق إضافي من نوع المستخدم
-//        if (!$user instanceof \App\Models\User) {
-//            throw new \InvalidArgumentException('يجب توفير مستخدم صالح');
-//        }
+
 
         // تحقق من عدم التصويت المسبق
         if ($course->votes()->where('user_id', $user->id)->exists()) {
-            throw new \RuntimeException('المستخدم قام بالتصويت مسبقاً');
+            return response()->json('المستخدم قام بالتصويت مسبقاً');
         }
 
         return $course->votes()->create([

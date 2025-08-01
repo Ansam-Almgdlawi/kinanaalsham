@@ -9,6 +9,9 @@ use App\Http\Controllers\Api\CourseVoteController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\VolunteerRegistrationController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\EventPostController;
+use App\Http\Controllers\EventRatingController;
+use App\Http\Controllers\EventVolunteerController;
 use App\Http\Controllers\OpportunityApplicationController;
 use App\Http\Controllers\OpportunityController;
 
@@ -28,12 +31,7 @@ use App\Http\Resources\UserResource;
 use App\Http\Controllers\Api\SuccessStoryController;
 use App\Http\Controllers\Api\VolunteerApplicationController;
 use App\Http\Controllers\Api\TrainingCourseController;
-use App\Http\Controllers\Api\CourseVoteController;
-use App\Http\Controllers\Api\Admin\CourseAnnouncementController;
-use App\Http\Controllers\Api\NewsController;
-use App\Http\Controllers\Api\VolunteerRegistrationController;
-use App\Http\Controllers\OpportunityApplicationController;
-use App\Http\Controllers\OpportunityController;
+
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\LogoutController;
@@ -139,7 +137,7 @@ Route::group(['middleware' => ['role:admin'|'Project Manager']], function () {
 });
 
 Route::get('/courses', [CourseVoteController::class, 'index'])->middleware(['auth:api', 'beneficiary.volunteer']);
-Route::post('{courseId}/vote', [CourseVoteController::class, 'vote'])->middleware(['auth:api', 'beneficiary.volunteer']);
+Route::post('{courseId}/vote', [CourseVoteController::class, 'vote'])->middleware(['auth:sanctum']);
 
 Route::get('/courses/{id}', [CourseVoteController::class, 'show'])->middleware(['auth:api', 'beneficiary.volunteer']);
 Route::get('/top-courses', [CourseAnnouncementController::class, 'topVotedCourses'])->middleware('auth:api','admin.projectmanager');
@@ -167,17 +165,43 @@ Route::prefix('beneficiaries')->group(function () {
     Route::post('/register', [BeneficiaryController::class, 'store']);
     Route::post('/login', [LoginController::class, 'beneficiaryLogin']);
 
-
+});
 /*
 |--------------------------------------------------------------------------
 | Event APIs
 |--------------------------------------------------------------------------
 */
 
-    Route::post('/events', [EventController::class, 'store'])->middleware('auth:sanctum'); // إنشاء فعالية جديدة
-    Route::post('/events/by-month', [EventController::class, 'getEventsByMonth']);
-    Route::post('/events/by-date', [EventController::class, 'getEventsByDate']);
+    Route::post('/events', [EventController::class, 'store'])
+        ->middleware('auth:api','admin.projectmanager');
+    Route::post('/events/by-month', [EventController::class, 'getEventsByMonth'])
+        ->middleware('auth:api','admin.projectmanager');
+    Route::post('/events/by-date', [EventController::class, 'getEventsByDate'])
+        ->middleware('auth:api','admin.projectmanager');
+    Route::post('/events/{event}/register', [EventVolunteerController::class, 'register'])
+        ->middleware(['auth:sanctum']);
+    Route::get('volunteer/events', [EventVolunteerController::class, 'getMyEvents'])
+    ->middleware('auth:sanctum');
+    Route::post('event/posts', [EventPostController::class, 'store'])
+        ->middleware('auth:api','admin.projectmanager');
 
+   Route::get('published-events', [EventController::class, 'getPublishedEvents'])
+       ->middleware(['auth:api', 'beneficiary.volunteer']);
+
+    Route::post('events/{event}/rate', [EventRatingController::class, 'store'])
+        ->middleware(['auth:api', 'beneficiary.volunteer']);
+
+Route::get('events/{event}/comments', [EventRatingController::class, 'getComments'])
+    ->middleware('auth:api','admin.projectmanager');
+
+Route::get('events/{event}/average-rating', [EventRatingController::class, 'getAverageRating'])
+    ->middleware('auth:api','admin.projectmanager');
+
+
+
+    /*
+    ----------------------------------------------------------------
+    */
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/success-stories', [SuccessStoryController::class, 'store']);
         Route::get('/profile', [BeneficiaryController::class, 'profile']);
@@ -202,5 +226,5 @@ Route::prefix('beneficiaries')->group(function () {
         Route::post('/emergency-requests', [EmergencyRequestController::class, 'store']);
         Route::get('/emergency/my-requests', [EmergencyRequestController::class, 'showMyEmergencyRequests']);
     });
-});
+
 
