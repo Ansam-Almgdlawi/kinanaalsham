@@ -24,11 +24,11 @@ class RoleSeeder extends Seeder
 
             ],
             [
-                'name' => 'Supervisor',
+                'name' => 'DonationsManager',
 
             ],
             [
-                'name' => 'Coordinator',
+                'name' => 'VolunteerManager',
 
             ],
             [
