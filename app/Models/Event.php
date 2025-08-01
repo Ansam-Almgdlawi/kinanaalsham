@@ -52,4 +52,17 @@ class Event extends Model
     {
         return $this->belongsTo(User::class, 'supervisor_user_id');
     }
+
+    public function volunteers()
+    {
+        return $this->belongsToMany(User::class, 'event_volunteer')
+            ->wherePivot('user_type', 'volunteer');
+    }
+
+    public function ratings()
+    {
+        return $this->hasMany(EventRating::class);
+    }
+
+
 }

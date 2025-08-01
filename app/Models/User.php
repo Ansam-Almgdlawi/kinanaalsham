@@ -102,5 +102,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(BeneficiaryDetail::class, 'user_id');
     }
-
+    public function events()
+    {
+        return $this->belongsToMany(Event::class, 'event_volunteer')
+            ->withPivot('status', 'user_type');
+    }
 }

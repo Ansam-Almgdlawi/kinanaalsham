@@ -1,0 +1,371 @@
+{
+	"info": {
+		"_postman_id": "93ebefa2-f2fe-4d40-af39-a558cdab473d",
+		"name": "Event",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24887295",
+		"_collection_link": "https://bold-station-324093.postman.co/workspace/Team-Workspace~5a1c4a51-1fca-4c5c-835a-ecd06110e9c9/collection/24887295-93ebefa2-f2fe-4d40-af39-a558cdab473d?action=share&source=collection_link&creator=24887295"
+	},
+	"item": [
+		{
+			"name": "event-store",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "events-by-month",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "events-by-date",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "22|Bluu79pTl3KOU7cBnzkxtcdoYsi9GCA3OFtMhWPU598ff53f",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"date\":\"2025-09-20\"\r\n\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/events/by-date",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"events",
+						"by-date"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "volunteer-register",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "30|H8NV4MvOBWuBL8ZiaIe7Vm3vDgQ3aor6pwhjXq3o94253955",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/events/5/register",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"events",
+						"5",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "show-event-volunteer",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "event-posts",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "35|NPAUlmWGkh7o1x1FytWUqIeO1cqWuN7atJNgg5ordf4e274b",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "event_id",
+							"value": "6",
+							"type": "text"
+						},
+						{
+							"key": "content",
+							"value": "شكراً لجميع المتطوعين في هذه الفعالية .",
+							"type": "text"
+						},
+						{
+							"key": "media",
+							"type": "file",
+							"src": [
+								"/C:/Users/ASUS/Pictures/angry-birds-cute-background-k13smmz8m3ddw3y4.jpg",
+								"/C:/Users/ASUS/Pictures/30-صور-كرتون-خلفيات-كرتون-صور-كرتونية-خلفيات-كرتونية-صور-افلام-كرتون-cartoon-images-wallpapers-hd.jpg"
+							],
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/event/posts",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"event",
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "published-events",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "rating-comment",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "37|7wYBS3oTzy92iGkm1SFt4l2AaEOtxVEACgBAcN9C9b1ae132",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"rating\":\"1\"\r\n\"comment\":\"فعالية رائعة!\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/events/1/rate",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"events",
+						"1",
+						"rate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "show-event-comment",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "38|VuAiLJmQs7MqiSPGisywjDNtU4B8MdSACMyDmvvH7fdeddbc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/events/1/comments",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"events",
+						"1",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "average-star-rating",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "39|3AH80py0Y5abtTNa76IARFpmXc1tCkf3NI3XNbQad0ea2d81",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/events/1/average-rating",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"events",
+						"1",
+						"average-rating"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

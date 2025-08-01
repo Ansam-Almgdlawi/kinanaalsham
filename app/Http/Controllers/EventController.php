@@ -5,7 +5,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EventCreateRequest;
+use App\Http\Resources\EventResource;
 use App\Models\Event;
+use App\Models\EventPost;
 use App\Services\EventService;
 use Illuminate\Http\Request;
 
@@ -69,4 +71,24 @@ class EventController extends Controller
             'events' => $events
         ]);
     }
+
+    public function getPublishedEvents()
+    {
+        $events = EventPost::with(['event', 'admin']) // تحميل العلاقات المطلوبة
+        ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'events' => $events->map(function ($event) {
+                return [
+                    'content' => $event->content,
+                    'media' => $event->media ? asset('storage/' . $event->media[0]) : null,
+                    'event_name' => $event->event->title ?? null,
+                    'admin_name' => $event->admin->name ?? null,
+                    'created_at' => $event->created_at->format('Y-m-d H:i:s')
+                ];
+            })
+        ]);
+    }
+
 }

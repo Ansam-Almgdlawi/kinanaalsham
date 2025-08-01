@@ -381,6 +381,14 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "show-course-registrants",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
 		}
 	]
 }

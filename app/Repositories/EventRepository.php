@@ -28,4 +28,8 @@ class EventRepository
             'is_public' => $data['is_public'],
         ]);
     }
+
+
+
+
 }
