@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Event;
+use App\Observers\EventObserver;
 use App\Repositories\EloquentOpportunityApplicationRepository;
 use App\Repositories\EloquentOpportunityRepository;
 use App\Repositories\OpportunityApplicationRepositoryInterface;
@@ -55,7 +57,7 @@ class AppServiceProvider extends ServiceProvider
             ->prefix('api')
             ->group(base_path('routes/api.php'));
 
-
+        Event::observe(EventObserver::class);
 
 
     }

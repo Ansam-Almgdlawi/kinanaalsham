@@ -20,6 +20,10 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             AdminUserSeeder::class,
             BeneficiaryTypeSeeder::class,
+            WarehouseSeeder::class,
+            UserSeeder::class,
+            EventSeeder::class,
+            VolunteerDetailSeeder::class,
 
         ]);
     }

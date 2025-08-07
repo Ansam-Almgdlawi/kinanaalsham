@@ -64,7 +64,7 @@ class LoginController extends Controller
 
         $user = User::where('phone_number', $request->phone_number)->first();
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+        if (! $user || ! Hash::check($request->password, $user->password)|| $user->deleted_at !== null) {
             return response()->json(['message' => 'بيانات الدخول غير صحيحة'], 401);
         }
 

@@ -5,35 +5,34 @@
 
 use App\Http\Controllers\Api\Admin\CourseAnnouncementController;
 use App\Http\Controllers\Api\CourseVoteController;
-
 use App\Http\Controllers\Api\NewsController;
+use App\Http\Controllers\Api\VolunteerBadgeController;
 use App\Http\Controllers\Api\VolunteerRegistrationController;
+use App\Http\Controllers\CertificateController;
+use App\Http\Controllers\DistributionController;
+use App\Http\Controllers\DonationController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventPostController;
 use App\Http\Controllers\EventRatingController;
 use App\Http\Controllers\EventVolunteerController;
 use App\Http\Controllers\OpportunityApplicationController;
 use App\Http\Controllers\OpportunityController;
-
-
 use App\Http\Controllers\AssistanceRequestController;
 use App\Http\Controllers\EmergencyRequestController;
 use App\Http\Controllers\HonorBoardController;
 use App\Http\Controllers\InquiryController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VolunteerProfileController;
+use App\Http\Controllers\WarehouseController;
 use App\Models\BeneficiaryDocument;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Resources\UserResource;
-
 // ==== Controllers ====
 use App\Http\Controllers\Api\SuccessStoryController;
 use App\Http\Controllers\Api\VolunteerApplicationController;
 use App\Http\Controllers\Api\TrainingCourseController;
-
-
-
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\LogoutController;
@@ -80,11 +79,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/volunteer/profile', [VolunteerProfileController::class, 'update']);
     Route::get('/profile', [VolunteerProfileController::class, 'show']);
 
-//    Route::get('/user', function (Request $request) {
-//        return new UserResource(
-//            $request->user()->load('volunteerDetails', 'role')
-//        );
-//    });
 
     // التصويت على الدورات
     Route::get('/courses', [CourseVoteController::class, 'index']);
@@ -117,7 +111,8 @@ Route::prefix('admin')->group(function () {
 
         // للأدمن: تحديث حالة طلب (قبول، رفض، ...)
         Route::put('/assistance-requests/{assistanceRequest}', [AssistanceRequestController::class, 'updateStatus']);
-
+        Route::delete('/users/{user}', [UserController::class, 'destroy']);
+        Route::get('/all-volunteers', [UserController::class, 'index']);
         // المستفيدين
         Route::post('beneficiaries/{user}/status', [BeneficiaryController::class, 'updateStatus']);
         Route::get('beneficiaries/pending', [BeneficiaryController::class, 'pending']);
@@ -199,10 +194,22 @@ Route::get('events/{event}/comments', [EventRatingController::class, 'getComment
 Route::get('events/{event}/average-rating', [EventRatingController::class, 'getAverageRating'])
     ->middleware('auth:api','admin.projectmanager');
 
+///////////جديد
 Route::post('/login-project-manager', [AdminLoginController::class, 'loginProjectManager']);
 Route::post('/logout', [AdminLoginController::class, 'logout'])
     ->middleware('auth:sanctum');
-
+Route::post('/in-kind-donations', [DonationController::class, 'store']);
+Route::post('/warehouses', [WarehouseController::class, 'store']);
+Route::post('/warehouses/{warehouse}/add-donation/{donation}', [WarehouseController::class, 'addDonation']);
+Route::get('/warehouses/{warehouse}/inventory', [WarehouseController::class, 'inventory']);
+Route::get('/in-kind-donations/pending', [DonationController::class, 'pendingDonations']);
+Route::post('/distributions', [DistributionController::class, 'store']); // إنشاء توزيع
+Route::post('/distributions/{id}/mark-received', [DistributionController::class, 'markReceived']); // تسليم مستلم
+Route::get('/distributions/{id}', [DistributionController::class, 'show']); // عرض توزيع
+Route::get('/monthly-report/{month}/{year}', [ReportController::class, 'monthlyReport']);
+Route::get('/statistics', [ReportController::class, 'getDashboardStats']);
+Route::get('/volunteer-of-week', [VolunteerBadgeController::class, 'volunteerOfTheWeek']);
+Route::get('/volunteer-of-month', [VolunteerBadgeController::class, 'volunteerOfTheMonth']);
     /*
     ----------------------------------------------------------------
     */
@@ -216,19 +223,17 @@ Route::post('/logout', [AdminLoginController::class, 'logout'])
 
         // 2. للمستفيد: عرض جميع استفساراته مع الردود
         Route::get('/inquiries', [InquiryController::class, 'indexBeneficiary']);
-
         // 3. للمستفيد: عرض استفسار معين له
         Route::get('/inquiries/{inquiry}', [InquiryController::class, 'showBeneficiary']);
         // --- مسارات طلبات المساعدة ---
 
         // 1. للمستفيد: تقديم طلب مساعدة جديد
         Route::post('/assistance-requests', [AssistanceRequestController::class, 'store']);
-
         // 2. للمستفيد: عرض جميع طلباته
         Route::get('/assistance-requests', [AssistanceRequestController::class, 'index']);
-
         Route::post('/emergency-requests', [EmergencyRequestController::class, 'store']);
         Route::get('/emergency/my-requests', [EmergencyRequestController::class, 'showMyEmergencyRequests']);
+        Route::get('/my-certificates', [CertificateController::class, 'getUserCertificates']);
     });
 
 
