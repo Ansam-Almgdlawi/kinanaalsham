@@ -38,7 +38,7 @@ class BeneficiaryController extends Controller
 
         $user = User::findOrFail($userId);
 
-        if ($user->role_id !== 3) {
+        if ($user->role_id !== 6) {
             return response()->json(['message' => 'هذا المستخدم ليس مستفيداً.'], 400);
         }
 
