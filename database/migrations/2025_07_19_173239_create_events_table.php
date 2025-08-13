@@ -15,7 +15,7 @@ class CreateEventsTable extends Migration
 
             $table->string('name', 255); // VARCHAR(255), NN
             $table->text('description'); // TEXT, NN
-            $table->unsignedBigInteger('event_type_id'); // FK لـ event_types
+            $table->unsignedBigInteger('event_type_id')->nullable(); // FK لـ event_types
             $table->dateTime('start_datetime'); // DATETIME, NN
             $table->dateTime('end_datetime'); // DATETIME, NN
             $table->string('location_text', 255)->nullable(); // VARCHAR(255), NULLABLE

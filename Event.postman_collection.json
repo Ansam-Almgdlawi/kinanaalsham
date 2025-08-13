@@ -1,25 +1,116 @@
 {
 	"info": {
-		"_postman_id": "93ebefa2-f2fe-4d40-af39-a558cdab473d",
+		"_postman_id": "ecfebb90-1d4c-43b4-ac44-16a7f2429868",
 		"name": "Event",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "24887295",
-		"_collection_link": "https://bold-station-324093.postman.co/workspace/Team-Workspace~5a1c4a51-1fca-4c5c-835a-ecd06110e9c9/collection/24887295-93ebefa2-f2fe-4d40-af39-a558cdab473d?action=share&source=collection_link&creator=24887295"
+		"_collection_link": "https://bold-station-324093.postman.co/workspace/Team-Workspace~5a1c4a51-1fca-4c5c-835a-ecd06110e9c9/collection/24887295-ecfebb90-1d4c-43b4-ac44-16a7f2429868?action=share&source=collection_link&creator=24887295"
 	},
 	"item": [
 		{
 			"name": "event-store",
 			"request": {
-				"method": "GET",
-				"header": []
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "11|qypqmrnMEElAJaGYkTi96XlNmHqBxZ5sQI3ACuVZ236c460e",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"ورشة تدريب المتطوعين\",\r\n    \"description\": \"ورشة لتعليم مهارات القيادة\",\r\n    \"event_type_id\": 1,\r\n    \"start_datetime\": \"2025-08-20 10:00:00\",\r\n    \"end_datetime\": \"2025-08-20 14:00:00\",\r\n    \"location_text\": \"مقر الجمعية - الطابق الثاني\",\r\n    \"target_audience\": \"المتطوعون الجدد\",\r\n    \"max_participants\": 30,\r\n    \"is_public\": true,\r\n    \"supervisor_user_id\": 1  // (اختياري) ID المشرف\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/events",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"events"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "events-by-month",
 			"request": {
-				"method": "GET",
-				"header": []
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "11|qypqmrnMEElAJaGYkTi96XlNmHqBxZ5sQI3ACuVZ236c460e",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Transfer-Encoding",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"month\" : \"8\"\r\n   \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/events/by-month",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"events",
+						"by-month"
+					]
+				}
 			},
 			"response": []
 		},
@@ -127,7 +218,10 @@
 			"name": "show-event-volunteer",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": ""
+				}
 			},
 			"response": []
 		},
@@ -203,8 +297,44 @@
 		{
 			"name": "published-events",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "12|amsebkiKh3I45aTquuuyK8h9nIAQG5UWhwnEDkO6ca2e1532",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": []
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/published-events",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"published-events"
+					]
+				}
 			},
 			"response": []
 		},

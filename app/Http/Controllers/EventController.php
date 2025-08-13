@@ -81,9 +81,10 @@ class EventController extends Controller
         return response()->json([
             'events' => $events->map(function ($event) {
                 return [
+                    'id' => $event->id,
                     'content' => $event->content,
                     'media' => $event->media ? asset('storage/' . $event->media[0]) : null,
-                    'event_name' => $event->event->title ?? null,
+                    'event_name' => $event->event->name ?? null,
                     'admin_name' => $event->admin->name ?? null,
                     'created_at' => $event->created_at->format('Y-m-d H:i:s')
                 ];
