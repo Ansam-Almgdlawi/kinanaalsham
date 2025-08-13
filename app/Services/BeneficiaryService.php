@@ -24,7 +24,7 @@ class BeneficiaryService
                 'password' => Hash::make($data['password']),
                 'profile_picture_url' => $profilePath,
                 'status' => 'pending_verification',
-                'role_id' => 3, // نفترض أن 3 تعني "مستفيد"
+                'role_id' => 6, // نفترض أن 3 تعني "مستفيد"
             ]);
 
             $user->beneficiaryDetail()->create([

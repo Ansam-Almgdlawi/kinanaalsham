@@ -64,11 +64,11 @@ class LoginController extends Controller
 
         $user = User::where('phone_number', $request->phone_number)->first();
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+        if (! $user || ! Hash::check($request->password, $user->password)|| $user->deleted_at !== null) {
             return response()->json(['message' => 'بيانات الدخول غير صحيحة'], 401);
         }
 
-        if ($user->role_id != 3) {
+        if ($user->role_id != 6) {
             return response()->json(['message' => 'هذا الحساب ليس مستفيداً'], 403);
         }
 

@@ -6,12 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
+
+
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable,SoftDeletes;
     use HasRoles;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -109,10 +113,16 @@ class User extends Authenticatable
         return $this->belongsToMany(Event::class, 'event_volunteer')
             ->withPivot('status', 'user_type');
     }
+
     public function volunteerProjects()
     {
         return $this->belongsToMany(Project::class, 'project_volunteer')
             ->withPivot('status', 'registered_at');
     }
+        public function certificates()
+        {
+            return $this->hasMany(Certificate::class);
 
-}
+        }
+
+    }
