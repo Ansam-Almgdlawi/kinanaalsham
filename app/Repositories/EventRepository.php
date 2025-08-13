@@ -14,7 +14,7 @@ class EventRepository
         return Event::create([
             'name' => $data['name'],
             'description' => $data['description'],
-            'event_type_id' => $data['event_type_id'],
+            'event_type_id' => $data['event_type_id']?? null,
             'start_datetime' => $data['start_datetime'],
             'end_datetime' => $data['end_datetime'],
             'location_text' => $data['location_text'] ?? null,
