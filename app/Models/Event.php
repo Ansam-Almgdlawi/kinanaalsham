@@ -1,6 +1,6 @@
 <?php
 
-// app/Models/Event.php
+
 
 namespace App\Models;
 
@@ -64,5 +64,8 @@ class Event extends Model
         return $this->hasMany(EventRating::class);
     }
 
-
+    public function averageRating()
+    {
+        return $this->ratings()->average('rating');
+    }
 }

@@ -17,10 +17,6 @@ class EventVolunteerController extends Controller
         $this->eventVolunteerService = $eventVolunteerService;
     }
 
-
-
-    // app/Http/Controllers/EventVolunteerController.php
-
     public function register(RegisterVolunteerRequest $request, $eventId)
     {
         try {
@@ -59,7 +55,7 @@ class EventVolunteerController extends Controller
         if ($user->role_id !== 5) {
             return response()->json([
                 'success' => false,
-                'message' => 'عفواً، التسجيل في الفعاليات متاح فقط للمتطوعين المسجلين'
+                'message' => 'عفواً، هذا الاجراء متاح فقط للمتطوعين المسجلين'
             ], 403);
         }
 

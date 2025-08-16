@@ -21,15 +21,23 @@ use App\Http\Controllers\AssistanceRequestController;
 use App\Http\Controllers\EmergencyRequestController;
 use App\Http\Controllers\HonorBoardController;
 use App\Http\Controllers\InquiryController;
+
+use App\Http\Controllers\ProjectBeneficiaryController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectPostController;
+use App\Http\Controllers\ProjectRatingController;
+use App\Http\Controllers\ProjectVolunteerController;
+
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
+
 use App\Http\Controllers\VolunteerProfileController;
 use App\Http\Controllers\WarehouseController;
 use App\Models\BeneficiaryDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Resources\UserResource;
-// ==== Controllers ====
+
 use App\Http\Controllers\Api\SuccessStoryController;
 use App\Http\Controllers\Api\VolunteerApplicationController;
 use App\Http\Controllers\Api\TrainingCourseController;
@@ -171,10 +179,10 @@ Route::prefix('beneficiaries')->group(function () {
 
     Route::post('/events', [EventController::class, 'store'])
         ->middleware('auth:api','admin.projectmanager');
-    Route::post('/events/by-month', [EventController::class, 'getEventsByMonth'])
-        ->middleware('auth:api','admin.projectmanager');
-    Route::post('/events/by-date', [EventController::class, 'getEventsByDate'])
-        ->middleware('auth:api','admin.projectmanager');
+    Route::post('/events/by-month', [EventController::class, 'getEventsByMonth']);
+       // ->middleware('auth:api','admin.projectmanager');
+    Route::post('/events/by-date', [EventController::class, 'getEventsByDate']);
+       // ->middleware('auth:api','admin.projectmanager');
     Route::post('/events/{event}/register', [EventVolunteerController::class, 'register'])
         ->middleware(['auth:sanctum']);
     Route::get('volunteer/events', [EventVolunteerController::class, 'getMyEvents'])
@@ -182,17 +190,17 @@ Route::prefix('beneficiaries')->group(function () {
     Route::post('event/posts', [EventPostController::class, 'store'])
         ->middleware('auth:api','admin.projectmanager');
 
-   Route::get('published-events', [EventController::class, 'getPublishedEvents'])
-       ->middleware(['auth:api', 'beneficiary.volunteer']);
+    Route::get('published-events', [EventController::class, 'getPublishedEvents']);
+      // ->middleware(['auth:api', 'beneficiary.volunteer']);
 
     Route::post('events/{event}/rate', [EventRatingController::class, 'store'])
         ->middleware(['auth:api', 'beneficiary.volunteer']);
 
-Route::get('events/{event}/comments', [EventRatingController::class, 'getComments'])
-    ->middleware('auth:api','admin.projectmanager');
+    Route::get('events/{event}/comments', [EventRatingController::class, 'getComments']);
+  //  ->middleware('auth:api','admin.projectmanager');
 
-Route::get('events/{event}/average-rating', [EventRatingController::class, 'getAverageRating'])
-    ->middleware('auth:api','admin.projectmanager');
+    Route::get('events/{event}/average-rating', [EventRatingController::class, 'getAverageRating']);
+   // ->middleware('auth:api','admin.projectmanager');
 
 ///////////جديد
 Route::post('/login-project-manager', [AdminLoginController::class, 'loginProjectManager']);
@@ -236,4 +244,35 @@ Route::get('/volunteer-of-month', [VolunteerBadgeController::class, 'volunteerOf
         Route::get('/my-certificates', [CertificateController::class, 'getUserCertificates']);
     });
 
+/*
+|--------------------------------------------------------------------------
+| Projects APIs
+|--------------------------------------------------------------------------
+*/
+Route::post('projects', [ProjectController::class, 'store'])
+    ->middleware('auth:api','admin.projectmanager');
+Route::get('show/projects', [ProjectController::class,'index']);
 
+Route::middleware('auth:api')->group(function() {
+    // لعرض متطلبات فعالية معينة (للجميع)
+    Route::get('projects/{project}/requirements', [ProjectController::class, 'showRequirements']);
+
+    // لتحديث المتطلبات (للأدمن فقط)
+    Route::put('events/{event}/requirements', [ProjectController::class, 'updateRequirements']);});
+Route::post('register/{project}', [ProjectBeneficiaryController::class, 'register'])->middleware('auth:sanctum');
+Route::post('/projects/{project}/register', [ProjectVolunteerController::class, 'register'])
+    ->middleware(['auth:sanctum']);
+// للمتطوعين فقط
+Route::get('/volunteer/projects', [ProjectController::class, 'getMyProjects'])->middleware(['auth:sanctum']);
+Route::post('project/posts', [ProjectPostController ::class, 'store'])
+    ->middleware('auth:api','admin.projectmanager');
+Route::get('published-projects', [ProjectPostController::class, 'getPublishedProjects'])
+    ->middleware(['auth:api', 'beneficiary.volunteer']);
+Route::post('projects/{project}/ratings', [ProjectRatingController::class, 'store'])
+    ->middleware(['auth:api', 'beneficiary.volunteer']);
+
+Route::get('projects/{project}/ratings/comments', [ProjectRatingController::class, 'getComments'])
+    ->middleware('auth:api','admin.projectmanager');
+
+Route::get('projects/{project}/ratings/average', [ProjectRatingController::class, 'getAverageRating'])
+    ->middleware('auth:api','admin.projectmanager');
