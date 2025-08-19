@@ -35,6 +35,7 @@ class UserRepository
             'name' => $application->full_name,
             'email' => $application->email,
             'password' => Hash::make($data['password']),
+            'fcm_token' => $data['fcm_token'] ?? null,
             'phone_number' => $application->phone_number,
             'role_id' => $volunteerRoleId,
             'status' => 'active',

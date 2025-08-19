@@ -27,6 +27,7 @@ class RegisterRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'fcm_token' => ['nullable', 'string'],
             'phone_number' => ['nullable', 'string', 'max:20'],
             'skills' => ['nullable', 'string'],
             'interests' => ['nullable', 'string'],

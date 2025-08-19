@@ -55,7 +55,7 @@ class RegisterService
             $request->file('profile_picture');
 
             $user = $this->userRepository->createVolunteerUser(
-                $data,
+                array_merge($data, ['fcm_token' => $data['fcm_token'] ?? null]),
                 $application,
                 $volunteerRoleId,
                 $request->file('profile_picture') // ✅ هذا هو الملف فعليًا
