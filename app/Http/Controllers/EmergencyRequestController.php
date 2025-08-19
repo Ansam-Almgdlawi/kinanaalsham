@@ -3,15 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\EmergencyRequest;
+use App\Models\Notification;
 use App\Models\User;
+use App\Services\FcmService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class EmergencyRequestController extends Controller
 {
-    public function store(Request $request)
+    public function store(Request $request,FcmService $fcmService)
     {
         $validated = $request->validate([
             'request_details' => 'required|string|max:3000',
@@ -26,15 +29,29 @@ class EmergencyRequestController extends Controller
             'required_specialization' => $validated['required_specialization'],
         ]);
 
-//        $targetAddress = $validated['address'];
-//        $volunteersToNotify = User::whereHas('volunteerDetails', function ($query) use ($targetAddress) {
-//            // حدد اسم الجدول بشكل صريح: 'volunteer_details.address'
-//            $query->where('volunteer_details.address', $targetAddress);
-//        })->get();
+        $volunteersToNotify = User::whereHas('volunteerDetails', function ($query) use ($validated) {
+            $query->where('volunteer_details.address', $validated['address']);
+        })->get();
 
-        // 3. إرسال الإشعارات (Notifications)
-        // هذا الجزء مهم جدًا لإعلام المتطوعين بوجود طلب جديد
-        // Notification::send($volunteersToNotify, new NewEmergencyRequest($emergencyRequest));
+        foreach ($volunteersToNotify as $volunteer) {
+            if ($volunteer->fcm_token) {
+                $response = $fcmService->sendNotification(
+                    $volunteer->fcm_token,
+                    'طلب طارئ جديد',
+                    $validated['request_details'],
+                    ['emergency_id' => $emergencyRequest->id],
+                    'token'
+                );
+
+                Log::info('FCM Send Attempt', [
+                    'to_user' => $volunteer->id,
+                    'fcm_token' => $volunteer->fcm_token,
+                    'response' => $response,
+                ]);
+            } else {
+                Log::warning('User without FCM token - skipped', ['user_id' => $volunteer->id]);
+            }
+        }
 
         return response()->json([
             'message' => 'تم إرسال طلب الطوارئ بنجاح وإعلام المتطوعين في منطقتك.',

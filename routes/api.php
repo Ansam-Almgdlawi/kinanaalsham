@@ -15,6 +15,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventPostController;
 use App\Http\Controllers\EventRatingController;
 use App\Http\Controllers\EventVolunteerController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OpportunityApplicationController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\AssistanceRequestController;
@@ -126,6 +127,7 @@ Route::prefix('admin')->group(function () {
         Route::get('beneficiaries/pending', [BeneficiaryController::class, 'pending']);
         Route::get('beneficiaries/{user}', [BeneficiaryController::class, 'show']);
         Route::post('beneficiaries/success-stories', [SuccessStoryController::class, 'store']);
+        Route::get('/my-notifications', [NotificationController::class, 'myNotifications']);
     });
 });
 
