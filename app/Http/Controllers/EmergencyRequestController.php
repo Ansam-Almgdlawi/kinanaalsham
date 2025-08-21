@@ -10,11 +10,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class EmergencyRequestController extends Controller
 {
-    public function store(Request $request,FcmService $fcmService)
+    public function store(Request $request, FcmService $fcmService)
     {
         $validated = $request->validate([
             'request_details' => 'required|string|max:3000',
@@ -33,24 +34,28 @@ class EmergencyRequestController extends Controller
             $query->where('volunteer_details.address', $validated['address']);
         })->get();
 
+        $notificationTitle = 'طلب طارئ جديد';
+        $notificationBody = $validated['request_details'];
+
         foreach ($volunteersToNotify as $volunteer) {
+            // الخطوة 1: إرسال إشعار FCM (الكود الحالي الخاص بك)
             if ($volunteer->fcm_token) {
-                $response = $fcmService->sendNotification(
+                $fcmService->sendNotification(
                     $volunteer->fcm_token,
-                    'طلب طارئ جديد',
-                    $validated['request_details'],
-                    ['emergency_id' => $emergencyRequest->id],
+                    $notificationTitle,
+                    $notificationBody,
+                    ['emergency_id' => (string) $emergencyRequest->id],
                     'token'
                 );
-
-                Log::info('FCM Send Attempt', [
-                    'to_user' => $volunteer->id,
-                    'fcm_token' => $volunteer->fcm_token,
-                    'response' => $response,
-                ]);
-            } else {
-                Log::warning('User without FCM token - skipped', ['user_id' => $volunteer->id]);
             }
+
+            // الخطوة 2: حفظ الإشعار يدويًا في قاعدة البيانات
+            $noty = Notification::create([
+                'user_id' =>  $volunteer->id,
+                'type' => 'token',
+                'title' => $notificationTitle,
+                'body' => $notificationBody,
+            ]);
         }
 
         return response()->json([

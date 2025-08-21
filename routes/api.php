@@ -30,12 +30,15 @@ use App\Http\Controllers\ProjectRatingController;
 use App\Http\Controllers\ProjectVolunteerController;
 
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\VolunteerProfileController;
 use App\Http\Controllers\WarehouseController;
 use App\Models\BeneficiaryDocument;
+use App\Models\Fund;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use App\Http\Resources\UserResource;
 
@@ -278,3 +281,15 @@ Route::get('projects/{project}/ratings/comments', [ProjectRatingController::clas
 
 Route::get('projects/{project}/ratings/average', [ProjectRatingController::class, 'getAverageRating'])
     ->middleware('auth:api','admin.projectmanager');
+Route::post('/donate', [StripePaymentController::class, 'donate']);
+
+
+Route::post('/stripe/webhook', [StripePaymentController::class, 'handleWebhook']);
+Route::get('/fund', function() {
+    $fund = Fund::first();
+    return response()->json([
+        'name' => $fund?->name ?? 'No Account',
+        'balance' => $fund?->balance ?? 0,
+    ]);
+});
+Route::get('/events/{id}', [EventController::class, 'show']);

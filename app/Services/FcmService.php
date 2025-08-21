@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use Google\Auth\Credentials\ServiceAccountCredentials;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Exception\RequestException;
+use Psr\Http\Message\RequestInterface;
 
 class FcmService
 {
@@ -29,9 +30,17 @@ class FcmService
      */
     protected function getAccessToken(): string
     {
+        $guzzleClient = new Client(['verify' => false]);
+
+        $httpHandler = function (RequestInterface $request, array $options = [] ) use ($guzzleClient) {
+            return $guzzleClient->send($request, $options);
+        };
+
         $scopes = ['https://www.googleapis.com/auth/firebase.messaging'];
-        $credentials = new ServiceAccountCredentials($scopes, $this->serviceAccountPath);
-        $token = $credentials->fetchAuthToken();
+
+        $credentials = new ServiceAccountCredentials($scopes, $this->serviceAccountPath );
+
+        $token = $credentials->fetchAuthToken($httpHandler );
 
         return $token['access_token'];
     }
@@ -75,6 +84,7 @@ class FcmService
                     'Content-Type'  => 'application/json',
                 ],
                 'json' => $message,
+                'verify' => false,
             ]);
 
             $responseBody = json_decode($response->getBody()->getContents(), true);

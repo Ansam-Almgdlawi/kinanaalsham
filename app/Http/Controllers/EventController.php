@@ -91,5 +91,16 @@ class EventController extends Controller
             })
         ]);
     }
+    public function show($id)
+    {
+        $event = Event::with([
+            'eventType',
+            'organizer',
+            'supervisor',
+            'volunteers'
+        ])->findOrFail($id);
+
+        return response()->json($event);
+    }
 
 }

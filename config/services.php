@@ -33,5 +33,9 @@ return [
     'fcm' => [
         'project_id' => env('FIREBASE_PROJECT_ID'),
     ],
+    'stripe' => [
+        'secret' => env('STRIPE_SECRET'),
+        'key' => env('STRIPE_KEY'),
+    ],
 
 ];
