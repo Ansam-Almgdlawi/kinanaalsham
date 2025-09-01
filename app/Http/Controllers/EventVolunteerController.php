@@ -17,6 +17,7 @@ class EventVolunteerController extends Controller
         $this->eventVolunteerService = $eventVolunteerService;
     }
 
+
     public function register(RegisterVolunteerRequest $request, $eventId)
     {
         try {
@@ -46,6 +47,7 @@ class EventVolunteerController extends Controller
             ], 400);
         }
     }
+
     public function getMyEvents()
     {
         $user = auth()->user();
@@ -59,7 +61,7 @@ class EventVolunteerController extends Controller
         }
 
 
-        return $this->eventVolunteerService->getVolunteerEvents($user);
+        return $this->eventVolunteerService->getVolunteerEvents($user->id);
     }
 
 }

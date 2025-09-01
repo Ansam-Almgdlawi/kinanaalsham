@@ -65,8 +65,10 @@ class ProjectController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                'event_name' => $event->name,
-                'requirements' => $event->requirements
+                'event_name'   => $event->name,
+                'requirements' => collect(explode(',', $event->requirements))
+                    ->map(fn($item) => trim($item)) // يشيل المسافات
+                    ->values() // يرجع list مرتبة بالأرقام 0,1,2
             ]
         ]);
     }

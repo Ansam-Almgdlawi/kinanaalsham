@@ -24,12 +24,12 @@ class ProjectVolunteerController extends Controller
             $user = auth()->user();
 
             // التحقق من أن المستخدم متطوع (role_id = 5)
-            if ($user->role_id !== 5) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'عفواً، التسجيل في الفعاليات متاح فقط للمتطوعين المسجلين'
-                ], 403);
-            }
+            //if ($user->role_id !== 5) {
+            // return response()->json([
+            //'success' => false,
+            //'message' => 'عفواً، التسجيل في الفعاليات متاح فقط للمتطوعين المسجلين'
+            //], 403);
+            // }
 
             // التحقق من وجود الفعالية الربحية
             $project = project::find($projectId);

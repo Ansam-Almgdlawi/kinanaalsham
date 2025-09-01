@@ -54,7 +54,7 @@ class TaskController extends Controller
             // Add task hours to volunteer's total hours
             // (نفترض أن اليوم 8 ساعات عمل)
             $hours_to_add = $task->duration_in_days * 8;
-            $user->volunteerDetails()->increment('total_hours', $hours_to_add);
+            $user->volunteerDetails()->increment('total_hours_volunteered', $hours_to_add);
 
             return response()->json(['message' => 'Task assigned successfully.']);
         });

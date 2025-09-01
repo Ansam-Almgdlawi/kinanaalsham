@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             EventSeeder::class,
             VolunteerDetailSeeder::class,
             OpportunitiesSeeder::class,
+            ProjectSeeder::class,
 
         ]);
     }

@@ -68,4 +68,9 @@ class Event extends Model
     {
         return $this->ratings()->average('rating');
     }
+    public function roadmaps()
+    {
+        return $this->hasMany(Roadmap::class);
+    }
+
 }
