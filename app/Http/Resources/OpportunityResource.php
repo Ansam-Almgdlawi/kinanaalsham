@@ -25,6 +25,8 @@ class OpportunityResource extends JsonResource
             'end_date' => $this->end_date ? $this->end_date->format('Y-m-d') : null,
             'requirements' => $this->requirements,
             'is_remote' => (bool) $this->is_remote,
+            'skills' => $this->skills,
+            'category' => $this->category,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
 

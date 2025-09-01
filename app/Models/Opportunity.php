@@ -25,6 +25,8 @@ class Opportunity extends Model
         'end_date',
         'requirements',
         'is_remote',
+        'skills',
+        'category',
     ];
 
     /**

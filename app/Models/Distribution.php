@@ -28,4 +28,5 @@ class Distribution extends Model
     {
         return $this->belongsTo(BeneficiaryType::class);
     }
+
 }

@@ -31,6 +31,8 @@ class CreateOpportunityRequest extends FormRequest
             'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
             'requirements' => ['nullable', 'string'],
             'is_remote' => ['sometimes', 'boolean'], // اختياري، والقيمة الافتراضية FALSE في DB
+            'skills' => ['nullable', 'string'],
+            'category' => ['nullable', 'string', 'in:Educational,Medicine,Organizational,Media,Technical'],
         ];
     }
 
@@ -48,6 +50,8 @@ class CreateOpportunityRequest extends FormRequest
             'type.in' => 'نوع الفرصة يجب أن يكون إما "job" أو "volunteering".',
             'start_date.after_or_equal' => 'تاريخ البدء يجب أن يكون اليوم أو بعده.',
             'end_date.after_or_equal' => 'تاريخ الانتهاء يجب أن يكون بعد تاريخ البدء أو مساوياً له.',
+            'skills' => ['nullable', 'string'],
+            'category' => ['nullable', 'in:Educational,Medicine,Organizational,Media,Technical'],
         ];
     }
 }

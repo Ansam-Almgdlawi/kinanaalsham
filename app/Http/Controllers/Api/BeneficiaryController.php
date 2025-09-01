@@ -8,8 +8,10 @@ use App\Http\Requests\UpdateBeneficiaryProfileRequest;
 use App\Http\Resources\BeneficiaryProfileResource;
 use App\Http\Resources\BeneficiaryResource;
 use App\Models\BeneficiaryDocument;
+use App\Models\BeneficiaryType;
 use App\Models\User;
 use App\Services\BeneficiaryService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -140,5 +142,42 @@ class BeneficiaryController extends Controller
 
         return response()->json(['message' => 'تم حذف المستند بنجاح.']);
     }
+    public function getByType($typeName)
+    {
+        $type = BeneficiaryType::where('name', $typeName)->firstOrFail();
+
+        $beneficiaries = $type->beneficiaries()
+            ->with('user')
+            ->get()
+            ->map(function ($beneficiary) {
+                return [
+                    'id' => $beneficiary->user->id,
+                    'name' => $beneficiary->user->name,
+                    'civil_status' => $beneficiary->civil_status,
+                    'family_members_count' => $beneficiary->family_members_count,
+                ];
+            });
+
+        return response()->json([
+            'type' => $type->name,
+            'beneficiaries' => $beneficiaries
+        ]);
+    }
+    ////////////
+    public function showBalance(Request $request): JsonResponse
+    {
+        $user = Auth::user();
+        $beneficiaryDetail = $user->beneficiaryDetail;
+
+        if (!$beneficiaryDetail) {
+            return response()->json(['message' => 'Beneficiary details not found.'], 404);
+        }
+
+        return response()->json([
+            'name' => $user->name,
+            'current_balance' => $beneficiaryDetail->balance,
+        ]);
+    }
+
 
 }

@@ -1,0 +1,161 @@
+{
+	"info": {
+		"_postman_id": "aa490478-dd01-4c5c-8f84-283ac3035ce5",
+		"name": "roadmap",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30894423",
+		"_collection_link": "https://web.postman.co/workspace/Kenana-Charity-API~3b24ee19-49a3-4fa8-aa59-61e56cb9fa02/collection/30894423-aa490478-dd01-4c5c-8f84-283ac3035ce5?action=share&source=collection_link&creator=30894423"
+	},
+	"item": [
+		{
+			"name": "creatRoadmap",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "17|FLNOmpjplc6f9EJe5yf5VmFAYIpdMkS6Irqa0Hkd7b951762",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"event_id\": 1, // ID الفعالية\r\n    \"title\": \"Roadmap for Ramadan Iftar\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/roadmaps",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"roadmaps"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "creatRoadmap Copy",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "17|FLNOmpjplc6f9EJe5yf5VmFAYIpdMkS6Irqa0Hkd7b951762",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roadmap_id\": 1, // ID الرودماب الذي تم إنشاؤه\r\n    \"title\": \"Decorating the Hall\",\r\n    \"description\": \"Decorate the main hall for the event.\",\r\n    \"duration_in_days\": 3,\r\n    \"required_volunteers\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/tasks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetRoadmap for event",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "17|FLNOmpjplc6f9EJe5yf5VmFAYIpdMkS6Irqa0Hkd7b951762",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/events/1/roadmaps",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"events",
+						"1",
+						"roadmaps"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "chooseTaskBy Volunteer",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "kenana",
+			"value": "",
+			"type": "default"
+		}
+	]
+}

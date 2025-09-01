@@ -6,6 +6,8 @@
 use App\Http\Controllers\Api\Admin\CourseAnnouncementController;
 use App\Http\Controllers\Api\CourseVoteController;
 use App\Http\Controllers\Api\NewsController;
+use App\Http\Controllers\Api\RoadmapController;
+use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\VolunteerBadgeController;
 use App\Http\Controllers\Api\VolunteerRegistrationController;
 use App\Http\Controllers\CertificateController;
@@ -120,7 +122,7 @@ Route::prefix('admin')->group(function () {
         Route::put('/inquiries/{inquiry}/reply', [InquiryController::class, 'reply']);
         //  للأدمن: عرض جميع الطلبات
         Route::get('/assistance-requests', [AssistanceRequestController::class, 'indexAdmin']);
-
+        Route::get('/distributions/latest', [UserController::class, 'showLatest']);
         // للأدمن: تحديث حالة طلب (قبول، رفض، ...)
         Route::put('/assistance-requests/{assistanceRequest}', [AssistanceRequestController::class, 'updateStatus']);
         Route::delete('/users/{user}', [UserController::class, 'destroy']);
@@ -293,3 +295,15 @@ Route::get('/fund', function() {
     ]);
 });
 Route::get('/events/{id}', [EventController::class, 'show']);
+Route::get('/warehouses', [WarehouseController::class, 'index']);
+Route::get('/beneficiaries/type/{type}', [BeneficiaryController::class, 'getByType']);
+Route::get('/volunteers/{id}/recommendations', [OpportunityController::class, 'recommend']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/beneficiary/balance', [BeneficiaryController::class, 'showBalance']);
+    Route::post('/roadmaps', [RoadmapController::class, 'store']);
+    Route::post('/tasks', [TaskController::class, 'store']);
+
+    // Roadmaps/Tasks Routes (for Volunteers)
+    Route::get('/events/{event}/roadmaps', [RoadmapController::class, 'index']);
+    Route::post('/tasks/{task}/choose', [TaskController::class, 'chooseTask']);
+});

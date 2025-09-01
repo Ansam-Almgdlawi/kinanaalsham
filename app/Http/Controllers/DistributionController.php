@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\BeneficiaryDetail;
 use App\Models\Distribution;
 use App\Models\DistributionRecord;
+use App\Models\MonthlyDistribution;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -100,4 +102,6 @@ class DistributionController extends Controller
             'records' => $records,
         ]);
     }
+
+
 }

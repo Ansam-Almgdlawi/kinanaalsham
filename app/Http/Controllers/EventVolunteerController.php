@@ -23,12 +23,12 @@ class EventVolunteerController extends Controller
             $user = auth()->user();
 
 
-            if ($user->role_id !== 5) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'عفواً، التسجيل في الفعاليات متاح فقط للمتطوعين المسجلين'
-                ], 403);
-            }
+            //if ($user->role_id !== 5) {
+            // return response()->json([
+            //  'success' => false,
+            //'message' => 'عفواً، التسجيل في الفعاليات متاح فقط للمتطوعين المسجلين'
+            // ], 403);
+            // }
 
             $data = [
                 'event_id' => $eventId, // نأخذها من الـ URL
@@ -46,7 +46,6 @@ class EventVolunteerController extends Controller
             ], 400);
         }
     }
-
     public function getMyEvents()
     {
         $user = auth()->user();

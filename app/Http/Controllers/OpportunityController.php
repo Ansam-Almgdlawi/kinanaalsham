@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateOpportunityRequest;
 use App\Http\Requests\UpdateOpportunityStatusRequest;
 use App\Http\Resources\OpportunityResource;
+use App\Models\Opportunity;
+use App\Models\VolunteerDetail;
 use App\Services\OpportunityService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -76,4 +78,45 @@ class OpportunityController extends Controller
             ], 500); // 500 Internal Server Error
         }
     }
+    public function recommend($volunteerId)
+    {
+        $volunteer = VolunteerDetail::findOrFail($volunteerId);
+
+        $opportunities = Opportunity::where('status', 'open')->get();
+        $recommendations = [];
+
+        foreach ($opportunities as $opportunity) {
+            $score = 0;
+
+            // 1. تطابق الاهتمامات مع المجال
+            if ($volunteer->interests === $opportunity->category) {
+                $score += 50;
+            }
+
+            // 2. مقارنة المهارات
+            $volunteerSkills = array_map('trim', explode(',', strtolower($volunteer->skills ?? '')));
+            $opportunitySkills = array_map('trim', explode(',', strtolower($opportunity->skills ?? '')));
+            $commonSkills = array_intersect($volunteerSkills, $opportunitySkills);
+            $score += count($commonSkills) * 10;
+
+            // 3. نوع التطوع (عن بعد أو ميداني)
+            if (($volunteer->volunteering_type_preference === 'remote' && $opportunity->is_remote) ||
+                ($volunteer->volunteering_type_preference === 'on_site' && !$opportunity->is_remote)) {
+                $score += 5;
+            }
+
+            $recommendations[] = [
+                'opportunity' => $opportunity,
+                'score' => $score,
+                'matched_skills' => array_values($commonSkills),
+            ];
+        }
+
+        // ترتيب حسب أعلى Score
+        usort($recommendations, fn($a, $b) => $b['score'] <=> $a['score']);
+
+        return response()->json($recommendations);
+    }
+
+
 }
