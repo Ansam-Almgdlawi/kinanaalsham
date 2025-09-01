@@ -51,7 +51,7 @@ class BeneficiaryController extends Controller
 
     public function pending()
     {
-        $pendingUsers = User::where('role_id', 3)
+        $pendingUsers = User::where('role_id', 6)
         ->where('status', 'pending_verification')
             ->with(['beneficiaryDetail', 'documents'])
             ->get();

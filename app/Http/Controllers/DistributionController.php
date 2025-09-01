@@ -24,7 +24,8 @@ class DistributionController extends Controller
 
         $distribution = Distribution::create($data);
 
-        $beneficiaries = BeneficiaryDetail::where('beneficiary_type_id', $data['beneficiary_type_id'])->pluck('user_id');
+        $beneficiaries = BeneficiaryDetail::where('beneficiary_type_id',
+            $data['beneficiary_type_id'])->pluck('user_id');
 
         foreach ($beneficiaries as $userId) {
             DistributionRecord::create([
