@@ -78,10 +78,15 @@ class OpportunityController extends Controller
             ], 500); // 500 Internal Server Error
         }
     }
-    public function recommend($volunteerId)
+    public function recommend(Request $request)
     {
-        $volunteer = VolunteerDetail::findOrFail($volunteerId);
+        $volunteer = Auth::user();
 
+        if (!$volunteer) {
+            return response()->json(['message' => 'Unauthenticated'], 401);
+        }
+
+        // 2. نفس المنطق السابق
         $opportunities = Opportunity::where('status', 'open')->get();
         $recommendations = [];
 

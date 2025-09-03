@@ -298,11 +298,12 @@ Route::get('/fund', function() {
 Route::get('/events/{id}', [EventController::class, 'show']);
 Route::get('/warehouses', [WarehouseController::class, 'index']);
 Route::get('/beneficiaries/type/{type}', [BeneficiaryController::class, 'getByType']);
-Route::get('/volunteers/{id}/recommendations', [OpportunityController::class, 'recommend']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/beneficiary/balance', [BeneficiaryController::class, 'showBalance']);
     Route::post('/roadmaps', [RoadmapController::class, 'store']);
     Route::post('/tasks', [TaskController::class, 'store']);
+    Route::get('/volunteers/recommendations', [OpportunityController::class, 'recommend']);
+
 
     // Roadmaps/Tasks Routes (for Volunteers)
     Route::get('/events/{event}/roadmaps', [RoadmapController::class, 'index']);
