@@ -38,6 +38,7 @@ class DistributionController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'تم إنشاء التوزيع وربط المستفيدين.',
+            "id"=>$distribution->id
         ]);
     }
 
@@ -98,6 +99,7 @@ class DistributionController extends Controller
         });
 
         return response()->json([
+            "distribution_id"=>$distributionId,
             'title' => $distribution->title,
             'beneficiary_type' => $distribution->beneficiaryType->name,
             'records' => $records,

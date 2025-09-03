@@ -74,22 +74,35 @@ class EventController extends Controller
 
     public function getPublishedEvents()
     {
-        $events = EventPost::with(['event', 'admin']) // تحميل العلاقات المطلوبة
-        ->orderBy('created_at', 'desc')
+
+
+        $eventPosts = EventPost::with(['event', 'admin'])
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return response()->json([
-            'events' => $events->map(function ($event) {
+            'data' => $eventPosts->map(function ($post) {
                 return [
-                    'id' => $event->id,
-                    'content' => $event->content,
-                    'media' => $event->media ? asset('storage/' . $event->media[0]) : null,
-                    'event_name' => $event->event->name ?? null,
-                    'admin_name' => $event->admin->name ?? null,
-                    'created_at' => $event->created_at->format('Y-m-d H:i:s')
+                    'id' => $post->id,
+                    'content' => $post->content,
+                    'media' => (!empty($post->media) && isset($post->media[0])) ? asset('storage/' . $post->media[0]) : null,
+                    'event' => $post->event ? [
+                        'id' => $post->event->id,
+                        'name' => $post->event->name,
+                        'description' => $post->event->description,
+                        'status' => $post->event->status,
+                    ] : null,
+                    'admin' => $post->admin ? [
+                        'id' => $post->admin->id,
+                        'name' => $post->admin->name,
+                    ] : null,
+                    'created_at' => $post->created_at ? $post->created_at->format('Y-m-d H:i:s') : 'غير محدد',
                 ];
-            })
+            }),
+
+
         ]);
+
     }
     public function show($id)
     {
