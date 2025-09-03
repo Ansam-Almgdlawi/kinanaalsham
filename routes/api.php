@@ -17,6 +17,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventPostController;
 use App\Http\Controllers\EventRatingController;
 use App\Http\Controllers\EventVolunteerController;
+use App\Http\Controllers\MonthlyDistributionController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OpportunityApplicationController;
 use App\Http\Controllers\OpportunityController;
@@ -122,7 +123,6 @@ Route::prefix('admin')->group(function () {
         Route::put('/inquiries/{inquiry}/reply', [InquiryController::class, 'reply']);
         //  للأدمن: عرض جميع الطلبات
         Route::get('/assistance-requests', [AssistanceRequestController::class, 'indexAdmin']);
-        Route::get('/distributions/latest', [UserController::class, 'showLatest']);
         // للأدمن: تحديث حالة طلب (قبول، رفض، ...)
         Route::put('/assistance-requests/{assistanceRequest}', [AssistanceRequestController::class, 'updateStatus']);
         Route::delete('/users/{user}', [UserController::class, 'destroy']);
@@ -225,6 +225,8 @@ Route::get('/monthly-report/{month}/{year}', [ReportController::class, 'monthlyR
 Route::get('/statistics', [ReportController::class, 'getDashboardStats']);
 Route::get('/volunteer-of-week', [VolunteerBadgeController::class, 'volunteerOfTheWeek']);
 Route::get('/volunteer-of-month', [VolunteerBadgeController::class, 'volunteerOfTheMonth']);
+Route::get('/show/latest', [MonthlyDistributionController::class, 'showLatest']);
+
     /*
     ----------------------------------------------------------------
     */
@@ -278,11 +280,10 @@ Route::get('published-projects', [ProjectPostController::class, 'getPublishedPro
 Route::post('projects/{project}/ratings', [ProjectRatingController::class, 'store'])
     ->middleware(['auth:api', 'beneficiary.volunteer']);
 
-Route::get('projects/{project}/ratings/comments', [ProjectRatingController::class, 'getComments'])
-    ->middleware('auth:api','admin.projectmanager');
+Route::get('projects/{project}/ratings/comments', [ProjectRatingController::class, 'getComments']);
 
-Route::get('projects/{project}/ratings/average', [ProjectRatingController::class, 'getAverageRating'])
-    ->middleware('auth:api','admin.projectmanager');
+Route::get('projects/{project}/ratings/average', [ProjectRatingController::class, 'getAverageRating']);
+
 Route::post('/donate', [StripePaymentController::class, 'donate']);
 
 

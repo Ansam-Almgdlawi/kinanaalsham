@@ -35,7 +35,7 @@ class BeneficiaryController extends Controller
         }
 
         $request->validate([
-            'status' => 'required|in:active,rejected',
+            'status' => 'required|in:active,inactive',
         ]);
 
         $user = User::findOrFail($userId);
