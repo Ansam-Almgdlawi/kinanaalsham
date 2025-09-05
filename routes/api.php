@@ -295,6 +295,9 @@ Route::get('/fund', function() {
         'balance' => $fund?->balance ?? 0,
     ]);
 });
+Route::prefix('admin')->group(function () {
+    Route::get('/getCoursesforAdmin', [CourseAnnouncementController::class, 'index']);
+});
 Route::get('/events/{id}', [EventController::class, 'show']);
 Route::get('/warehouses', [WarehouseController::class, 'index']);
 Route::get('/beneficiaries/type/{type}', [BeneficiaryController::class, 'getByType']);

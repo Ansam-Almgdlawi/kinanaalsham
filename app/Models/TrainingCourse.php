@@ -46,4 +46,12 @@ class TrainingCourse extends Model
     }
 
 
+
+    public function participants()
+    {
+        return $this->hasMany(CourseVolunteer::class, 'course_id');
+    }
+
+
+
 }

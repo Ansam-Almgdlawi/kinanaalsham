@@ -9,6 +9,7 @@ use App\Http\Resources\TrainingCourseWithVotesResource;
 use App\Models\TrainingCourse;
 use App\Services\TrainingCourseService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class CourseAnnouncementController extends Controller
 {
@@ -22,9 +23,11 @@ class CourseAnnouncementController extends Controller
     public function topVotedCourses()
     {
         // 1. جلب الدورات مع عدد التصويتات
-        $courses = TrainingCourse::withCount('votes')
+        $courses = TrainingCourse::where('target_audience', 'volunteer') // فقط دورات المتطوعين
+        ->withCount('votes')
             ->orderBy('votes_count', 'desc')
             ->get();
+
 
         // 2. تحديد أعلى عدد تصويتات
         $maxVotes = $courses->first()->votes_count ?? 0;
@@ -48,12 +51,15 @@ class CourseAnnouncementController extends Controller
 
         // 2. حذف الدورات غير المعتمدة (عدا الدورة الجديدة)
         $query = TrainingCourse::where('id', '!=', $request->course_id)
+            ->where('target_audience', 'volunteer')
             ->where(function($query) {
                 $query->where('is_announced', false)
                     ->orWhereNull('is_announced');
             })
             ->where('created_at', '<', now());
+
         $deletedCount = $query->delete();
+
 
 
 
@@ -75,4 +81,19 @@ class CourseAnnouncementController extends Controller
             'data' => new TrainingCourseResource($course)
         ]);
     }
+    public function index()
+    {
+        $courses = TrainingCourse::with([
+            'participants.user', // جلب كل المتطوعين والمستفيدين لكل كورس
+            'votes.user'         // جلب بيانات المستخدمين اللي صوتوا لكل كورس
+        ])->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $courses
+        ]);
+    }
+
+
+
 }
