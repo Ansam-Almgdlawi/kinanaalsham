@@ -154,7 +154,7 @@ Route::post('{courseId}/vote', [CourseVoteController::class, 'vote'])->middlewar
 Route::get('/courses/{id}', [CourseVoteController::class, 'show'])->middleware(['auth:api', 'beneficiary.volunteer']);
 Route::get('/top-courses', [CourseAnnouncementController::class, 'topVotedCourses'])->middleware('auth:api','admin.projectmanager');
 Route::post('/announce', [CourseAnnouncementController::class, 'announce'])->middleware('auth:api','admin.projectmanager');
-Route::get('/volunteer/news', [NewsController::class, 'getAnnouncedCourse'])->middleware(['auth:api', 'beneficiary.volunteer']);
+Route::get('/volunteer/news', [NewsController::class, 'getAnnouncedCourse']);
 Route::post('/courses/{id}/register', [VolunteerRegistrationController::class, 'register'])->middleware(['auth:api', 'beneficiary.volunteer']);
 Route::get('/courses/{courseId}/registrations', [VolunteerRegistrationController::class, 'showRegistrations'])
     ->middleware('auth:api','admin.projectmanager');

@@ -37,6 +37,31 @@ class AdminUserSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
+
+        // إنشاء أو تحديث حساب Volunteer Manager
+        User::updateOrCreate(
+            ['email' => 'vm@gmail.com'],
+            [
+                'name' => 'Volunteer Manager',
+                'password' => Hash::make('vm12345'),
+                'role_id' => 3,
+                'status' => 'active',
+                'email_verified_at' => now(),
+            ]
+        );
+
+        // إنشاء أو تحديث حساب Finance Manager
+        User::updateOrCreate(
+            ['email' => 'fm@gmail.com'],
+            [
+                'name' => 'Finance Manager',
+                'password' => Hash::make('fm12345'),
+                'role_id' => 4,
+                'status' => 'active',
+                'email_verified_at' => now(),
+            ]
+        );
     }
+
 
 }

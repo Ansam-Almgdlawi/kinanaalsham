@@ -25,56 +25,26 @@ class AdminLoginController extends Controller
             ]);
         }
 
-        // التأكد أن المستخدم هو أدمن (مثلاً role_id = 1)
-        if ($user->role_id !== 1) {
+        // السماح فقط للأدوار: 1 (أدمن)، 2 (PM)، 3 (Volunteer Manager)، 4 (Finance Manager)
+        if (!in_array($user->role_id, [1, 2, 3, 4])) {
             return response()->json([
                 'success' => false,
-                'message' => 'ليس لديك صلاحية الدخول كأدمن.',
+                'message' => 'ليس لديك صلاحية الدخول للنظام.',
             ], 403);
         }
 
         // إنشاء التوكن
-        $token = $user->createToken('admin_token')->plainTextToken;
+        $token = $user->createToken('role_'.$user->role_id.'_token')->plainTextToken;
 
         return response()->json([
             'success' => true,
             'message' => 'تم تسجيل الدخول بنجاح.',
-            'token' => $token,
+            'token'   => $token,
+            'role_id' => $user->role_id,
+            'role'    => $user->role ? $user->role->name : null,
         ]);
     }
 
-    public function loginProjectManager(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
-
-        $user = User::where('email', $credentials['email'])->first();
-
-        if (!$user || !Hash::check($credentials['password'], $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['بيانات الدخول غير صحيحة.'],
-            ]);
-        }
-
-        // التأكد أن المستخدم هو Project Manager (مثلاً role_id = 2)
-        if ($user->role_id !== 2) {
-            return response()->json([
-                'success' => false,
-                'message' => 'ليس لديك صلاحية الدخول كمدير مشروع.',
-            ], 403);
-        }
-
-        // إنشاء التوكن
-        $token = $user->createToken('project_manager_token')->plainTextToken;
-
-        return response()->json([
-            'success' => true,
-            'message' => 'تم تسجيل الدخول بنجاح.',
-            'token' => $token,
-        ]);
-    }
 
     public function logout(Request $request)
     {
