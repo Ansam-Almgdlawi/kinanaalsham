@@ -5,6 +5,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterVolunteerRequest;
+use App\Models\Certificate;
+use App\Models\Event;
+use App\Models\User;
 use App\Services\EventVolunteerService;
 use App\Http\Resources\EventVolunteerResource;
 
@@ -62,6 +65,39 @@ class EventVolunteerController extends Controller
 
 
         return $this->eventVolunteerService->getVolunteerEvents($user->id);
+    }
+
+    public function confirmAttendance($eventId, $userId)
+    {
+        try {
+            $event = Event::findOrFail($eventId);
+            $user = User::findOrFail($userId);
+
+            // تحديث حالة الحضور
+            $event->volunteers()->updateExistingPivot($user->id, ['status' => 'attended']);
+
+            // إنشاء الشهادة
+            Certificate::firstOrCreate(
+                [
+                    'user_id' => $user->id,
+                    'event_id' => $event->id,
+                ],
+                [
+                    'issued_at' => now(),
+                ]
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'تم تأكيد الحضور وإنشاء شهادة للمتطوع',
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 
 }

@@ -308,4 +308,6 @@ Route::middleware('auth:sanctum')->group(function () {
     // Roadmaps/Tasks Routes (for Volunteers)
     Route::get('/events/{event}/roadmaps', [RoadmapController::class, 'index']);
     Route::post('/tasks/{task}/choose', [TaskController::class, 'chooseTask']);
+    Route::post('/events/{eventId}/attendance/{userId}', [EventVolunteerController::class, 'confirmAttendance']);
+
 });
