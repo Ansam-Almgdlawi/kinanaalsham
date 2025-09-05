@@ -63,11 +63,11 @@ class CourseVoteController extends Controller
 
     public function show($id): JsonResponse
     {
-        $user = auth()->user();
+      //  $user = auth()->user();
 
-        if (!$user || !in_array($user->role->id, [5,6])) {
-            abort(403, 'هذا الإجراء مسموح فقط للمستفيدين والمتطوعين!');
-        }
+//        if (!$user || !in_array($user->role->id, [5,6])) {
+//            abort(403, 'هذا الإجراء مسموح فقط للمستفيدين والمتطوعين!');
+//        }
 
         $course = TrainingCourse::with('votes')->withCount('votes')->find($id);
 

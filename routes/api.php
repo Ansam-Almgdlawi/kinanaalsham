@@ -151,7 +151,7 @@ Route::group(['middleware' => ['role:admin'|'Project Manager']], function () {
 Route::get('/courses', [CourseVoteController::class, 'index'])->middleware(['auth:api', 'beneficiary.volunteer']);
 Route::post('{courseId}/vote', [CourseVoteController::class, 'vote'])->middleware(['auth:sanctum']);
 
-Route::get('/courses/{id}', [CourseVoteController::class, 'show'])->middleware(['auth:api', 'beneficiary.volunteer']);
+Route::get('/courses/{id}', [CourseVoteController::class, 'show']);
 Route::get('/top-courses', [CourseAnnouncementController::class, 'topVotedCourses'])->middleware('auth:api','admin.projectmanager');
 Route::post('/announce', [CourseAnnouncementController::class, 'announce'])->middleware('auth:api','admin.projectmanager');
 Route::get('/volunteer/news', [NewsController::class, 'getAnnouncedCourse']);
